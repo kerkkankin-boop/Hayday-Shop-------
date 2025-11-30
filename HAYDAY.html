@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hay Day Shop (แฟนเมด)</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  .hero-title {
+    color: #ffffff !important;
+    text-shadow: 0 3px 6px rgba(0,0,0,0.45);
+  }
+
+:root{
+  --green:#16a34a;
+  --green-2:#7ed955;
+  --yellow:#facc15;
+  --bg-img: url(https://supercell.com/images/0d5b2928a3997cd65503a1a3f170590b/og_hayday.7177b929.jpg);
+  --card:#ffffffee;
+  --muted:#6b7280;
+  --red-wood: #111827;
+  --red: #dc2626;
+
+  /* --- THEME COLORS --- */
+  --crate-wood-light: #f0fff0;
+  --crate-wood-dark: #38a169;
+  --price-tag-bg: #e5ffe5; 
+  --price-text: #14532d;   
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Kanit',sans-serif;
+  background: #f7fff7; 
+  color:#111827;
+  -webkit-font-smoothing:antialiased;
+  padding-top:88px; 
+  transition: background-color 0.5s ease;
+}
+
+/* === SHOP BACKGROUND OVERRIDE === */
+body.shop-active {
+    background: linear-gradient(180deg, #e0f2e0 0%, #d1ead1 30%, #c5e1c5 100%);
+    background-size: cover;
+    background-attachment: fixed;
+}
+body.shop-active .container { padding-top: 0; }
+
+/* Container */
+.container{max-width:1200px;margin:0 auto;padding:18px}
+
+/* Header */
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:12px;
+  background:linear-gradient(90deg,#fff8dc,#fef9c3);
+  padding:12px 20px;
+  border-bottom:4px solid var(--yellow);
+  box-shadow:0 6px 18px rgba(12,12,12,0.06);
+  border-radius:0 0 14px 14px;
+}
+.header-inner{display:flex;align-items:center;width:100%;max-width:1200px;margin:0 auto;gap:12px;}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{
+  width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--green-2),#f6e05e);
+  display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;box-shadow:0 6px 18px rgba(2,6,23,0.06)
+}
+h1{margin:0;font-size:18px;color:var(--green)}
+
+/* Nav */
+nav{margin-left:auto; display:flex; align-items:center; gap:8px;}
+nav a{margin:0 10px;text-decoration:none;color:#374151;font-weight:700;transition:color .12s; white-space:nowrap}
+nav a:hover, nav a.active{color:var(--green)}
+
+/* user badge */
+.user-info-wrapper { display: flex; align-items: center; gap: 12px; margin-left: 12px; }
+.user-badge{display:flex;align-items:center;gap:8px;}
+.user-avatar{width:36px;height:36px;border-radius:999px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px; flex-shrink: 0;}
+.user-name{font-weight:700;color:#374151;font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;}
+.user-login-btn {
+    background: var(--yellow);
+    border: 2px solid #d97706;
+    color: var(--red-wood);
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 13px;
+    transition: all 0.1s;
+}
+.user-login-btn:hover { background: #fcd34d; }
+.user-login-btn:active { transform: translateY(1px); }
+
+/* HERO */
+.hero-wrap{width:100%;margin-bottom:18px}
+.hero{
+  width:100%;
+  min-height:320px;
+  background-image: var(--bg-img);
+  background-size:cover;
+  background-position:center;
+  border-radius:12px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  box-shadow:0 12px 40px rgba(2,6,23,0.08);
+  margin:0 auto;
+}
+.hero::after{ content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,0.45), rgba(0,0,0,0.18) 40%, rgba(0,0,0,0.25)); }
+.hero-content{ position:relative; z-index:2; color:#fff; text-align:center; padding:24px; max-width:1000px; }
+.hero h2{font-size:36px;margin:0 0 8px;line-height:1.05;text-shadow:0 6px 18px rgba(0,0,0,0.45)}
+.hero p{margin:0 0 14px;font-size:16px;color:#f7fffb;opacity:0.95}
+.hero .cta{display:inline-flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.hero .btn{background:var(--green);color:#fff;border:none;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:800}
+.hero .btn.secondary{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.12);color:#fff}
+
+/* Layout */
+main{display:flex;gap:22px;padding:6px 0}
+.left{flex:1}
+.right{width:360px} 
+
+/* Sections */
+section{display:none;padding:20px;background:var(--card);border-radius:12px;border:1px solid rgba(0,0,0,0.03);box-shadow:0 6px 20px rgba(2,6,23,0.03);margin-bottom:18px}
+section.active{display:block}
+h2{color:var(--green);margin-top:0}
+
+/* === SHOP SECTION HEADING === */
+#shop.active { padding: 0; background: none; box-shadow: none; border: none; margin-top: 20px; }
+#shop.active h2 {
+    background: var(--crate-wood-dark);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 0;
+    text-align: center;
+    border: 4px solid #1a5e37;
+    border-bottom: none;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    font-size: 1.5rem;
+}
+.shop-content-wrap { padding: 0 18px 18px; }
+
+/* Shop UI */
+.categories{ display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; padding: 0 10px; background: var(--crate-wood-light); padding-top: 15px; }
+.cat-btn{ background:#fff8dc;border:2px solid var(--yellow);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:700; transition: all 0.2s; }
+.cat-btn.active{ background:var(--green); color:#fff; border-color:transparent; box-shadow:0 6px 14px rgba(16,185,129,0.12); transform: translateY(-2px); }
+
+/* === PRODUCT CARDS === */
+.grid {
+    background: linear-gradient(180deg, var(--crate-wood-light), #e4f5e1);
+    border-radius: 0 0 12px 12px; 
+    padding: 18px 12px;
+    border: 4px solid var(--crate-wood-dark);
+    border-top: none;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:0;
+}
+
+.card{
+  background: #ffffff; 
+  border-radius:12px;
+  padding:12px;
+  border:2px solid #e0e0e0; 
+  text-align:center;
+  transition:transform .2s,box-shadow .2s;
+  position: relative; 
+  cursor: pointer; 
+  box-shadow: 0 8px 15px rgba(0,0,0,0.08); 
+}
+.card:hover{ transform:translateY(-6px); box-shadow: 0 12px 25px rgba(0,0,0,0.2), 0 0 0 3px var(--yellow); }
+
+/* Image Container */
+.card-img-wrap { position: relative; width: 100%; height: 140px; margin-bottom: 8px; }
+.card-img-wrap img{ background:#f9f8f2; border: 1px solid #dcdcdc; width:100%; height:100%; object-fit:contain; border-radius:8px; padding:6px; }
+
+/* --- QTY BADGE --- */
+.qty-badge {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: rgba(22, 163, 74, 0.95);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 1px solid #fff;
+    z-index: 2;
+}
+
+.card > div:nth-child(3) { color: #1a1a1a; font-weight: 700; font-size: 1.1rem; margin-top:8px; }
+
+/* Price Tag - BAHT Style */
+.price-wrap { margin: 6px 0 10px; min-height: 20px; display: flex; justify-content: center; align-items: center; position: relative; height: 40px; }
+.price, .sale-price {
+    display: inline-flex; align-items: center; justify-content: center; height: 34px; padding: 0 16px; border-radius: 99px;
+    background: var(--price-tag-bg); color: var(--price-text); border: 2px solid var(--green);
+    font-weight: 800; font-size: 1.1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.original-price { font-size: 0.85rem; color: #a3a3a3; text-decoration: line-through; margin-right: 10px; padding: 0; background: none; border: none; box-shadow: none; transform: none; height: auto; }
+.sale-price { background: #fee2e2; color: var(--red); border-color: var(--red); font-size: 1.2rem !important; }
+
+.btn{
+    background: var(--crate-wood-dark); border: none; border-bottom: 3px solid #1a5e37; color: #fff; font-weight: 700;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2); padding:8px 12px;border-radius:10px;cursor:pointer; transition: all 0.2s;
+}
+.btn:hover{ background: #1a5e37; transform: translateY(0); filter: brightness(1.1); }
+.btn:active{ transform: translateY(2px); border-bottom: 1px solid #1a5e37; }
+
+.sale-badge { position: absolute; top: -10px; right: -10px; background: var(--red); color: white; padding: 5px 10px; border-radius: 50%; font-weight: bold; font-size: 0.8rem; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.3); border: 2px solid var(--yellow); }
+.stock-info { font-size: 0.85rem; margin-top: 5px; padding-top: 5px; border-top: 1px dashed #e5e7eb; color: var(--green); }
+.low-stock { color: var(--red); font-weight: 600; }
+
+/* Cart */
+.cart{ position:sticky;top:20px;background:linear-gradient(180deg,#fff,#fffef8); border-radius:12px;padding:12px;border:1px solid rgba(0,0,0,0.04); box-shadow:0 10px 30px rgba(2,6,23,0.06); }
+.cart-title{display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.cart-list{margin-top:12px;display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;padding-right:6px}
+.cart-item{display:grid;grid-template-columns:56px 1fr auto;gap:10px;align-items:center;background:#fff;padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.03)}
+.cart-item img{width:56px;height:56px;object-fit:contain;border-radius:8px}
+.qty{display:flex;gap:6px;margin-top:6px}
+.qty button{width:28px;height:28px;border-radius:8px;border:none;background:#fde68a;cursor:pointer}
+.checkout{margin-top:10px;display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:2px solid var(--yellow)}
+
+section:not(#shop) { background: #fff; }
+.info {display:flex;gap:18px;flex-wrap:wrap}
+.info .card-small{flex:1;min-width:260px;background:#fff;border-radius:12px;padding:18px;border:1px solid rgba(0,0,0,0.03)}
+.info .card-small h3{margin-top:0;color:var(--green)}
+.contact-links a{color:var(--green);text-decoration:none;font-weight:700;display:inline-block;margin:6px 0}
+
+/* Checkout */
+.checkout-panel{display:grid;grid-template-columns:1fr 360px;gap:18px}
+.order-summary, .member-panel, .payment-panel, .receipt{ background: #fff8e5; border: 3px solid var(--crate-wood-light); box-shadow: 0 6px 15px rgba(0,0,0,0.1); padding:18px; }
+.order-summary h3, .member-panel h3, .payment-panel h3, .receipt h3 { color: var(--red-wood); border-bottom: 2px solid var(--crate-wood-light); padding-bottom: 5px; margin-bottom: 15px; }
+.order-line{ display:flex;justify-content:space-between;padding:8px 0; border-bottom:1px dashed var(--crate-wood-light); font-weight: 500; }
+.order-line:last-child { border-bottom: none; }
+.order-summary .order-line:last-child { border-top: 2px solid var(--crate-wood-dark); margin-top: 10px; padding-top: 10px; font-weight: 800; color: var(--red); }
+.receipt{text-align:center}
+
+.form-row { margin-bottom: 12px; }
+.form-row label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 14px; color: var(--red-wood); }
+.form-row input[type="text"], .form-row input[type="email"], .form-row input[type="password"], .form-row textarea { width: 100%; padding: 10px; border: 1px solid var(--crate-wood-light); border-radius: 8px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); font-size: 15px; font-family: inherit; transition: border-color 0.15s ease-in-out; background: #fff; }
+.form-row input:focus, .form-row textarea:focus { border-color: var(--green); outline: none; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2); }
+
+.btn.secondary{ background: var(--crate-wood-light); color: var(--red-wood); border-bottom: 3px solid #b8860b; }
+.btn.secondary:hover { background: #fde68a; filter: brightness(1.05); }
+.btn.secondary:active{ transform: translateY(2px); border-bottom: 1px solid #b8860b; }
+
+/* Footer */
+footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px;padding:20px}
+
+/* Team Section */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+.team-card { background: #fff; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03); transition: transform 0.2s; }
+.team-card:hover { transform: translateY(-5px); }
+.team-img-box { width: 100%; height: 200px; background: linear-gradient(180deg, #ecfdf5, #d1fae5); border-radius: 8px; margin-bottom: 10px; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+.team-img-box img { width: 100%; height: 100%; object-fit: contain; }
+.team-name { font-weight: 700; font-size: 16px; color: #374151; margin-bottom: 4px; }
+.team-role { font-size: 13px; color: var(--muted); }
+
+/* ---- MODAL STYLES ---- */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 10000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+.modal-overlay.show { display: flex; animation: fadeIn 0.3s; }
+.modal-box { background: #fff; width: 90%; max-width: 400px; border-radius: 20px; padding: 30px; text-align: center; position: relative; border: 4px solid var(--yellow); box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.product-modal-content { text-align: left; background: #fff; padding: 10px; border-radius: 10px; }
+#loginModal .form-row label, #registerModal .form-row label { text-align: left; }
+#loginMessage, #registerMessage { color: var(--red); font-weight: 700; margin-top: 15px; }
+
+@keyframes modalPop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Responsive */
+@media(max-width:980px){
+  body{padding-top:72px;}
+  main{flex-direction:column}
+  .right{width:100%} 
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .hero{min-height:240px}
+  .hero h2{font-size:26px}
+  nav{margin-left:12px; gap:6px;}
+  .header-inner{padding-right:12px;padding-left:12px; overflow-x: auto;}
+  .checkout-panel{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:12px" class="brand">
+      <div class="logo">HD</div>
+      <div>
+        <h1>Hay Day Shop</h1>
+        <div style="font-size:12px;color:var(--muted)">แฟนเมด — สินค้าจำลองจากเกม</div>
+      </div>
+    </div>
+
+    <nav>
+      <a href="#home" data-page="home" class="active">หน้าแรก</a>
+      <a href="#shop" data-page="shop">สินค้า</a>
+      <a href="#about" data-page="about">เกี่ยวกับเรา</a>
+      <a href="#contact" data-page="contact">ติดต่อ</a>
+      <a href="#checkout" data-page="checkout">ชำระเงิน</a>
+      <a href="#team" data-page="team">ผู้จัดทำ</a>
+    </nav>
+
+    <div class="user-info-wrapper" id="headerUserInfo"></div>
+  </div>
+</header>
+
+<div id="productModal" class="modal-overlay">
+  <div class="modal-box">
+    <div class="product-modal-content">
+      <div class="product-modal-image-box">
+        <img id="modalProductImg" src="" alt="Product Image" style="width:100%; height:200px; object-fit:contain; border-radius:12px; background:#f9f8f2; margin-bottom:15px; border:2px solid #eee;">
+      </div>
+      <h3 id="modalProductName" style="font-size: 1.5rem; color: var(--red-wood); margin: 0 0 5px;">ชื่อสินค้า</h3>
+      <span id="modalProductCat" style="background: var(--crate-wood-light); color: var(--green); padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 700;">หมวดหมู่</span>
+      
+      <div style="margin-top: 10px; font-weight: 800; color: #b45309; font-size: 1.1rem;">
+          📦 ปริมาณต่อชุด: <span id="modalProductQty" style="color: var(--red-wood);">x10 ชิ้น</span>
+      </div>
+
+      <p id="modalProductDesc" style="font-size:14px; color:var(--muted); margin: 10px 0 20px; line-height: 1.5;">รายละเอียดของสินค้า</p>
+      
+      <div class="modal-price-wrap" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: #e5ffe5; padding: 10px; border-radius: 10px; border: 2px solid var(--green);">
+        <div style="font-weight: 700; color: #14532d;">💰 ราคา:</div>
+        <div id="modalProductPrice" style="font-size: 1.5rem; font-weight: 900; color: var(--red-wood);">฿0</div>
+      </div>
+      
+      <div class="modal-stock-info-row" style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 14px;">
+        <div style="color: var(--muted); font-weight: 600;">สถานะคลัง:</div>
+        <div id="modalProductStock" style="font-weight: 700;">คงเหลือ: 0 ชุด</div>
+      </div>
+      
+      <div class="modal-btn-group" style="display: flex; gap: 10px;">
+        <button class="btn" id="modalAddToCartBtn" style="flex: 2; padding: 12px;">🧺 เพิ่มลงตะกร้า</button>
+        <button class="btn secondary" id="closeProductModalBtn" style="flex: 1; padding: 12px;">ปิด</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="loginModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 350px;">
+        <div class="product-modal-content" style="text-align: center;">
+            <h3 style="color: var(--green); margin-bottom: 20px; text-align: center;">เข้าสู่ระบบสมาชิก</h3>
+            <form id="loginForm">
+                <div class="form-row">
+                    <label for="loginUsername">ชื่อผู้ใช้ / อีเมล (Ex: farmer)</label>
+                    <input id="loginUsername" type="text" placeholder="เช่น farmer" required>
+                </div>
+                <div class="form-row">
+                    <label for="loginPassword">รหัสผ่าน (Ex: 1234)</label>
+                    <input id="loginPassword" type="password" placeholder="เช่น 1234" required>
+                </div>
+                <p id="loginMessage" style="color: var(--red); font-size: 13px; margin-bottom: 15px;"></p>
+                <button type="submit" class="btn" style="width:100%; padding: 12px; margin-top: 10px;">เข้าสู่ระบบ</button>
+                <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+                    <button type="button" class="btn secondary" id="showRegisterBtn" style="width:100%; padding: 12px;" onclick="showRegisterModal()">สมัครสมาชิกใหม่</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="registerModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 350px;">
+        <div class="product-modal-content" style="text-align: center;">
+            <h3 style="color: var(--green); margin-bottom: 20px; text-align: center;">สมัครสมาชิกใหม่</h3>
+            <form id="registerForm">
+                <div class="form-row">
+                    <label for="registerName">ชื่อเต็ม (สำหรับแสดงในระบบ)</label>
+                    <input id="registerName" type="text" placeholder="เช่น สุวิชา ฟาร์มเมอร์" required>
+                </div>
+                <div class="form-row">
+                    <label for="registerUsername">ชื่อผู้ใช้ / อีเมล</label>
+                    <input id="registerUsername" type="text" placeholder="เช่น newuser123" required>
+                </div>
+                <div class="form-row">
+                    <label for="registerPassword">รหัสผ่าน (ขั้นต่ำ 4 ตัวอักษร)</label>
+                    <input id="registerPassword" type="password" placeholder="เช่น 123456" required>
+                </div>
+                <p id="registerMessage" style="color: var(--red); font-size: 13px; margin-bottom: 15px;"></p>
+                <button type="submit" class="btn" style="width:100%; padding: 12px; margin-top: 10px;">สมัครสมาชิก</button>
+                <button type="button" class="btn secondary" id="closeRegisterModalBtn" style="width:100%; padding: 12px; margin-top: 10px;" onclick="showLoginModal()">กลับไปหน้าเข้าสู่ระบบ</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="hero-wrap">
+  <div class="hero" aria-hidden="false" role="img" aria-label="ภาพบรรยากาศ Hay Day">
+    <div class="hero-content">
+      <h2 class="hero-title">🌻 ยินดีต้อนรับสู่ Hay Day Shop</h2>
+      <p>ร้านแฟนเมดสำหรับแฟนเกม Hay Day — สินค้าน่ารัก ๆ จากในเกมมาให้เลือกชม จำลองบรรยากาศฟาร์มในฝัน</p>
+      <div class="cta">
+        <button class="btn" onclick="document.querySelector('[data-page=shop]').click()">เริ่มช้อปเลย</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <main>
+    <div class="left">
+
+      <section id="home" class="active">
+        <h2>🌻 Hay Day Shop — ตัวอย่างหน้าร้านแฟนเมด</h2>
+        <p style="color:var(--muted)">กด "เริ่มช้อปเลย" ด้านบนเพื่อข้ามไปยังส่วนสินค้าได้ทันที</p>
+        <p style="color:var(--muted)">สามารถรับชมวิดีโอตัวอย่างการเล่นได้ด่านล่างนี้เลย</p>
+        <div style="aspect-ratio: 16 / 9; max-width: 800px; margin: 20px auto 0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+          <iframe width="100%" height="100%" src="https://www.youtube.com/embed/kzj6ELhEJ0o?&modestbranding=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%; display:block;"></iframe>
+        </div>
+      </section>
+
+      <section id="shop">
+        <h2>🛒 สินค้าจากฟาร์ม (ราคามาตรฐาน)</h2>
+        <div class="shop-content-wrap">
+          <div class="categories" id="categories"></div>
+          <div id="productGrid" class="grid"></div>
+        </div>
+      </section>
+
+      <section id="about">
+        <h2>เกี่ยวกับเรา</h2>
+        <div class="info">
+          <div class="card-small">
+            <h3>ความเป็นมา</h3>
+            <p>ร้านค้าจำลอง Hay Day Shop ถูกสร้างขึ้นจากความหลงใหลในเกมทำฟาร์มยอดนิยมอย่าง Hay Day โดยมีเป้าหมายเพื่อนำเสนอสินค้าและไอเท็มต่าง ๆ ภายในเกมในรูปแบบหน้าร้าน E-commerce</p>
+            <p>โค้ดนี้ถูกพัฒนาขึ้นโดยกลุ่มนักศึกษา เพื่อใช้ในการศึกษาการออกแบบและพัฒนาเว็บไซต์ (Web Development) เท่านั้น</p>
+          </div>
+          <div class="card-small">
+            <h3>เป้าหมาย</h3>
+            <p>สร้างประสบการณ์การช็อปปิ้งที่สนุกสนานและเหมือนอยู่ในโลกของเกม Hay Day มากที่สุด โดยมุ่งเน้นการออกแบบที่เข้าถึงง่ายและน่ารัก</p>
+            <p>โค้ดนี้สร้างขึ้นเพื่อการศึกษาและการจัดทำโปรเจกต์เท่านั้น ไม่ได้มีจุดประสงค์ในการจำหน่ายสินค้าจริง</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2>✉️ ติดต่อเรา</h2>
+        <div class="info">
+          <div class="card-small">
+            <h3>ข้อมูลติดต่อ</h3>
+            <p>หากมีข้อสงสัย ข้อเสนอแนะ หรือต้องการความช่วยเหลือเกี่ยวกับสินค้า สามารถติดต่อเราได้ตามช่องทางด้านล่างนี้:</p>
+            <div class="contact-links">
+              <a href="#">อีเมล: support@haydayshop.fan</a><br>
+              <a href="#">โทรศัพท์: 08x-xxx-xxxx</a><br>
+              <a href="#">ที่อยู่: ฟาร์มใกล้กับเมือง Hay Day Town</a>
+            </div>
+          </div>
+          <div class="card-small">
+            <h3>ส่งข้อความถึงเรา</h3>
+            <div class="form-row">
+              <label for="contactName">ชื่อของคุณ</label>
+              <input id="contactName" type="text" placeholder="ชื่อ นามสกุล">
+            </div>
+            <div class="form-row">
+              <label for="contactEmail">อีเมล</label>
+              <input id="contactEmail" type="email" placeholder="you@example.com">
+            </div>
+            <div class="form-row">
+              <label for="contactMsg">ข้อความ</label>
+              <textarea id="contactMsg" rows="3" placeholder="ข้อความที่คุณต้องการส่ง..."></textarea>
+            </div>
+            <button class="btn" style="width:100%; margin-top:8px">ส่งข้อความ</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="team">
+  <h2 style="text-align:center; margin-bottom: 24px;">สมาชิกผู้จัดทำ</h2>
+
+  <style>
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .team-card {
+      background: #fff;
+      padding: 16px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .team-img-box img {
+      width: 100%;
+      max-width: 160px;
+      border-radius: 8px;
+    }
+  </style>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-img-box">
+        <img src="images/bam-1.png" alt="" />
+      </div>
+      <div class="team-name">นางสาวธนัชพร บุญพูล</div>
+      <div class="team-role"></div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-img-box">
+        <img src="images/Tai-3.png" alt="" />
+      </div>
+      <div class="team-name">นางสาวธันญารัตน์ คำจุล</div>
+      <div class="team-role">68104485</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-img-box">
+        <img src="images/Kwan-2.png" alt="" />
+      </div>
+      <div class="team-name">นางสาวศศิธร เสาร์ประโคน</div>
+      <div class="team-role">68075978</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-img-box">
+        <img src="images/wai-4.png" alt="" />
+      </div>
+      <div class="team-name">นางสาวศศิภา เอี่ยมสกุล</div>
+      <div class="team-role">68117080</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-img-box">
+        <img src="images/W-5.png" alt="" />
+      </div>
+      <div class="team-name">นายวรัญญู แก้วเมือง</div>
+      <div class="team-role">68075978</div>
+    </div>
+
+    <div class="team-card">
+      <div class="team-img-box">
+        <img src="images/K-6.png" alt="" />
+      </div>
+      <div class="team-name">นายเกริกกานต์ กิ่งแก้ว</div>
+      <div class="team-role">68095907</div>
+    </div>
+  </div>
+</section>
+
+
+      <section id="checkout">
+        <h2>💳 ชำระเงิน</h2>
+        <div class="checkout-panel">
+          <div>
+            <div class="order-summary" id="orderSummary">
+              <h3>สรุปคำสั่งซื้อ</h3>
+              <div id="orderLines"></div>
+              <div class="order-line" style="font-weight:800">
+                <div>รวมทั้งหมด</div>
+                <div id="orderTotal">฿0</div>
+              </div>
+            </div>
+            <div style="margin-top:12px" class="member-panel">
+              <h3>ข้อมูลผู้รับ / ที่อยู่</h3>
+              <div class="form-row">
+                <label for="shipName">ชื่อผู้รับ</label>
+                <input id="shipName" type="text" placeholder="ชื่อ นามสกุล">
+              </div>
+              <div class="form-row">
+                <label for="shipAddr">ที่อยู่จัดส่ง</label>
+                <input id="shipAddr" type="text" placeholder="บ้านเลขที่, ถนน, ตำบล, อำเภอ, จังหวัด">
+              </div>
+              <div class="form-row">
+                <label for="shipPhone">เบอร์โทรศัพท์</label>
+                <input id="shipPhone" type="text" placeholder="0XX-XXX-XXXX">
+              </div>
+              <button class="btn secondary" style="width:100%;" onclick="saveShippingInfo()">บันทึกข้อมูลนี้ไว้</button>
+            </div>
+            
+            <div style="margin-top:12px" class="payment-panel" id="paymentPanel">
+              <h3>วิธีการชำระเงิน</h3>
+              <p style="font-size:14px; color: var(--red-wood);">✅ รองรับการชำระเงินทันทีผ่านบัตรเครดิต/เดบิต (จำลอง) และโอนเงิน (แจ้งโอน)</p>
+              <div class="payment-methods">
+                <label><input type="radio" name="payment" value="transfer" checked> 🏦 โอนเงินผ่านธนาคาร (อัปโหลดสลิป)</label>
+                <label><input type="radio" name="payment" value="card"> 💳 บัตรเครดิต/เดบิต (ชำระทันที)</label>
+              </div>
+
+              <div id="transferPaymentForm" style="margin-top: 15px; border-top: 1px solid var(--crate-wood-light); padding-top: 15px; display: block;">
+                <h4 style="margin-top:0; color:var(--green)">กรุณาโอนเงินและอัปโหลดสลิป</h4>
+                <p style="font-size:13px; margin: 5px 0;">ยอดรวม: <span id="paymentAmountDisplay" style="font-weight: 700; color: var(--red);">฿0</span></p>
+                <div style="background:#fff; padding:10px; border-radius:8px; margin-bottom:10px;">
+                    <p style="font-size:14px; margin:0;">ธนาคารฟาร์มเมอร์ (Farmer Bank)</p>
+                    <p style="font-size:18px; font-weight:700; color:var(--crate-wood-dark); margin: 5px 0;">เลขบัญชี: 123-456-7890</p>
+                </div>
+                <div class="form-row">
+                  <label for="slipUpload">อัปโหลดหลักฐานการโอน</label>
+                  <input id="slipUpload" type="file" accept="image/*" style="padding: 5px; background: #fff; border: 1px solid #ddd;">
+                </div>
+                <button class="btn" id="confirmPayTransferBtn" style="width:100%;padding:12px;margin-top:20px" disabled>แจ้งโอนเงิน / ยืนยันการสั่งซื้อ</button> 
+              </div>
+
+              <div id="cardPaymentForm" style="margin-top: 15px; border-top: 1px solid var(--crate-wood-light); padding-top: 15px; display: none;">
+                <h4 style="margin-top:0; color:var(--green)">ชำระผ่านบัตรเครดิต/เดบิต (จำลอง)</h4>
+                <p style="font-size:13px; color:var(--muted)">ระบบจะจำลองการทำธุรกรรม เมื่อกดปุ่ม 'ชำระเงิน'</p>
+                <div class="form-row">
+                    <label for="cardNumber">หมายเลขบัตรเครดิต (4444-XXXX-XXXX-1111)</label>
+                    <input id="cardNumber" type="text" placeholder="16 หลัก" maxlength="16" required>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <div class="form-row" style="flex:2">
+                        <label for="cardExpiry">วันหมดอายุ (MM/YY)</label>
+                        <input id="cardExpiry" type="text" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+                    <div class="form-row" style="flex:1">
+                        <label for="cardCVC">CVC</label>
+                        <input id="cardCVC" type="text" placeholder="CVC" maxlength="3" required>
+                    </div>
+                </div>
+                <button class="btn" id="confirmPayCardBtn" style="width:100%; padding:12px; margin-top: 10px;" disabled>ชำระเงินด้วยบัตร ฿0</button>
+              </div>
+            </div>
+
+            <button class="btn secondary" id="backToShop" style="width:100%;padding:12px;margin-top:10px">กลับไปที่ร้านค้า</button>
+          </div>
+          <div class="receipt" id="receiptPanel" style="display:none">
+            <h3>✅ สั่งซื้อสำเร็จ!</h3>
+            <p style="color:var(--green)">ขอบคุณที่อุดหนุนสินค้าจาก Hay Day Shop ค่ะ</p>
+            <div id="receiptDetails"></div>
+            <button class="btn" onclick="activatePage('home'); clearCart(); document.getElementById('receiptPanel').style.display='none';" style="width:100%;margin-top:12px">กลับสู่หน้าแรก</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+    <div class="right" id="rightColumn">
+    </div>
+  </main>
+  <footer>
+    <p>© 2025 Hay Day Shop Fanmade. โค้ดนี้ทำขึ้นเพื่อการศึกษาเท่านั้น</p>
+  </footer>
+</div>
+
+<script>
+// ---------------------- ข้อมูลสินค้า (อัปเดต URL รูปภาพทั้งหมดเป็นลิงก์เสถียร) ----------------------
+// Note: qty = จำนวนชิ้นต่อชุด, price = ราคาขายเริ่มต้น (Base Price) ซึ่งถูกกว่า Max Price มาก
+const PRODUCTS = [
+  // 🌾 พืชผล (Crops) - ขายชุดละ 10 ชิ้น
+  {id:'wheat',name:'ข้าวสาลี',price:10,img:'https://static.wikia.nocookie.net/hayday/images/e/e2/Wheat.png',cat:'พืชผล', desc:'พืชผลพื้นฐาน ปลูกได้ตั้งแต่เลเวล 1 ใช้ทำขนมปังและอาหารสัตว์ ใช้เวลาปลูกเพียง 2 นาทีต่อชุด', qty:10},
+  {id:'corn',name:'ข้าวโพด',price:10,img:'https://static.wikia.nocookie.net/hayday/images/f/f8/Corn.png',cat:'พืชผล', desc:'ข้าวโพดหวาน ปลูกได้ตั้งแต่เลเวล 1 ใช้ทำป๊อปคอร์นและอาหารสัตว์ เป็นที่ต้องการสูง ใช้เวลาปลูก 5 นาที', qty:10},
+  {id:'soybean',name:'ถั่วเหลือง',price:10,img:'https://thumb.ac-illust.com/68/68519661204fad317814a2333d580ad1_t.jpeg',cat:'พืชผล', desc:'พืชผลหลักสำหรับผลิตอาหารสัตว์คุณภาพสูง ปลูกได้ที่เลเวล 5 ใช้เวลาปลูกนาน 20 นาที', qty:10},
+  {id:'sugarcane',name:'อ้อย',price:10,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrlJgyncrXa-j23Hrwxxp0JGAPQDVHRruGd6KkUoKd_sviwsXx-t0lFw4BUF71_T9mkbE&usqp=CAU',cat:'พืชผล', desc:'ใช้ผลิตน้ำตาลและน้ำเชื่อม ปลูกได้ที่เลเวล 7 เป็นวัตถุดิบสำคัญในการทำขนม ใช้เวลาปลูก 30 นาที', qty:10},
+  {id:'pumpkin',name:'ฟักทอง',price:10,img:'https://png.pngtree.com/png-clipart/20230117/ourmid/pngtree-pumpkin-vegetable-png-image_6164791.png',cat:'พืชผล', desc:'ฟักทองลูกใหญ่ ใช้ทำพายฟักทองและอาหารอื่นๆ ปลูกได้ที่เลเวล 15 ใช้เวลาปลูกถึง 3 ชั่วโมง', qty:10},
+  {id:'carrot',name:'แครอท',price:10,img:'https://img.freepik.com/premium-vector/hand-drawn-carrot-cartoon-vector-illustration-clipart-white-background_191095-43940.jpg',cat:'พืชผล'},
+  {id:'lettuce',name:'บล็อกเคอรี่',price:10,img:'https://www.media2free.com/wp-content/uploads/2022/01/%E0%B8%A3%E0%B8%B9%E0%B8%9B%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%95%E0%B8%B9%E0%B8%99-%E0%B8%9A%E0%B8%A5%E0%B8%AD%E0%B8%84%E0%B9%82%E0%B8%84%E0%B8%A5%E0%B8%B5%E0%B9%884-1-292x300.png',cat:'พืชผล', desc:'แครอทสด ใช้เป็นอาหารม้าและกระต่าย ปลูกได้ที่เลเวล 3 ใช้เวลาปลูกเพียง 10 นาทีต่อชุด', qty:10},
+  {id:'cotton',name:'ฝ้าย',price:15,img:'https://img.freepik.com/premium-vector/cotton-flowers-white-backgroundvector-illustration-cartoon-style_638232-263.jpg',cat:'พืชผล', desc:'ปุยฝ้ายสีขาว ใช้สำหรับผลิตผ้าและเครื่องแต่งกายในโรงทอผ้า ปลูกได้ที่เลเวล 42 ใช้เวลาปลูก 2 ชั่วโมง 30 นาที', qty:10},
+
+  // 🥩 ผลิตภัณฑ์จากสัตว์ (Animal Products) - ขายชุดละ 10 ชิ้น
+  {id:'egg',name:'ไข่',price:10,img:'data:image/jpeg;base64,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',cat:'ผลิตภัณฑ์จากสัตว์', desc:'ไข่ไก่สดจากเล้าไก่ ใช้ทำขนมอบและผลิตภัณฑ์แปรรูปอื่นๆ ได้ตั้งแต่เลเวล 1', qty:10},
+  {id:'milk',name:'นม',price:10,img:'https://img.freepik.com/premium-photo/cow-with-pink-nose-bucket-milk_981829-17439.jpg',cat:'ผลิตภัณฑ์จากสัตว์', desc:'นมวัวสดจากโรงนาวัว ใช้ผลิตครีม เนย และชีส เปิดใช้งานที่เลเวล 6', qty:10},
+  {id:'bacon',name:'เบคอน',price:15,img:'https://media.istockphoto.com/id/1269484014/th/%E0%B9%80%E0%B8%A7%E0%B8%84%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C/%E0%B8%8A%E0%B8%B4%E0%B9%89%E0%B8%99%E0%B9%80%E0%B8%9A%E0%B8%84%E0%B8%AD%E0%B8%99%E0%B9%81%E0%B8%AA%E0%B8%99%E0%B8%AD%E0%B8%A3%E0%B9%88%E0%B8%AD%E0%B8%A2%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%9E%E0%B8%B7%E0%B9%89%E0%B8%99%E0%B8%AB%E0%B8%A5%E0%B8%B1%E0%B8%87%E0%B9%80%E0%B8%A7%E0%B8%81%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C.jpg?s=612x612&w=0&k=20&c=kxzONGSLvrfV3wKGBT8Kl0_FBZC5zXTlNQETyCA46gY=',cat:'ผลิตภัณฑ์จากสัตว์', desc:'เบคอนรมควันจากคอกหมู วัตถุดิบสำคัญในอาหารหลายชนิด เช่น BLT แซนด์วิช เปิดใช้งานที่เลเวล 10', qty:10},
+  {id:'wool',name:'ขนแกะ',price:15,img:'https://img.freepik.com/premium-photo/cute-sheep-holding-scissors-cartoon-vector-icon-illustration-animal-tool-icon-concept-isolated-premium-vector-flat-cartoon-style_839035-1757634.jpg',cat:'ผลิตภัณฑ์จากสัตว์', desc:'ขนแกะนุ่มฟูจากคอกแกะ ใช้สำหรับผลิตเสื้อผ้าและหมวกในโรงทอผ้า เปิดใช้งานที่เลเวล 16', qty:10},
+  {id:'goat_milk',name:'นมแพะ',price:15,img:'https://img.freepik.com/premium-vector/goat-milk-steel-bucket-icon-cartoon-vector-food-splash_98402-123101.jpg',cat:'ผลิตภัณฑ์จากสัตว์', desc:'นมแพะจากคอกแพะ ใช้ผลิตชีสแพะและโยเกิร์ตคุณภาพ เปิดใช้งานที่เลเวล 32', qty:10},
+  
+  // 🏭 ผลิตภัณฑ์แปรรูป (Processed Goods) - ขายแยกชิ้น (x1) ราคาเริ่มต้น
+  {id:'cream',name:'ครีม',price:14,img:'https://itemhayday.com/img/product/p2uB0406%20Cream.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ครีมสด ทำจากนมวัวในโรงทำผลิตภัณฑ์นม ใช้เป็นส่วนผสมหลักในไอศกรีมและกาแฟ เปิดใช้เลเวล 6', qty:1},
+  {id:'butter',name:'เนย',price:20,img:'https://itemhayday.com/img/product/bEC7Tn09%20Butter.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'เนยคุณภาพดี ทำจากนมวัวในโรงทำผลิตภัณฑ์นม ใช้สำหรับทำขนมปังเนยและป๊อปคอร์นเนย เปิดใช้เลเวล 9', qty:1},
+  {id:'cheese',name:'ชีส',price:20,img:'https://itemhayday.com/img/product/UPSLwC12%20Cheese.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ชีสแสนอร่อย ทำจากนมวัวในโรงทำผลิตภัณฑ์นม ใช้ทำพิซซ่าและอาหารคาวอื่นๆ เปิดใช้เลเวล 12', qty:1},
+  {id:'popcorn',name:'ป๊อปคอร์น',price:9,img:'https://itemhayday.com/img/product/mjat9x08%20image.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ป๊อปคอร์นธรรมดา ทำจากข้าวโพดในเครื่องทำป๊อปคอร์น อาหารทานเล่นพื้นฐาน เปิดใช้เลเวล 8', qty:1},
+  {id:'brown_sugar',name:'น้ำตาลทรายแดง',price:9,img:'https://itemhayday.com/img/product/wfJuoh07%20Brown_Sugar.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'น้ำตาลทรายแดงเข้มข้น ทำจากอ้อยในโรงทำน้ำตาล ใช้เป็นส่วนผสมสำหรับเค้กและซอส เปิดใช้เลเวล 12', qty:1},
+  {id:'syrup',name:'น้ำเชื่อม',price:20,img:'https://itemhayday.com/img/product/ClPR4E18%20image.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'น้ำเชื่อมรสหวาน ทำจากอ้อยในโรงทำน้ำตาล ใช้ราดบนแพนเค้กหรือผสมในน้ำผลไม้ เปิดใช้เลเวล 13', qty:1},
+
+  // 🛠️ เครื่องมือและวัสดุ (Tools & Materials) - ขายแยกชิ้น (x1) ราคาถูก (Base Price)
+  {id:'screw',name:'สกรู',price:6,img:'https://itemhayday.com/img/product/yBZhXRNail.png',cat:'เครื่องมือและวัสดุ', desc:'วัสดุขยายโรงนา (Barn) ใช้สำหรับเพิ่มความจุในการเก็บผลิตภัณฑ์และวัตถุดิบต่างๆ', qty:1},
+  {id:'plank',name:'ไม้กระดาน',price:6,img:'https://itemhayday.com/img/product/Wp0AUxplank.png',cat:'เครื่องมือและวัสดุ', desc:'วัสดุขยายโรงนา (Barn) ที่จำเป็นในการเพิ่มพื้นที่เก็บของบนฟาร์มของคุณ', qty:1},
+  {id:'bolt',name:'สลักเกลียว',price:6,img:'https://itemhayday.com/img/product/fz9uMiBolt.png',cat:'เครื่องมือและวัสดุ', desc:'วัสดุขยายโรงนา (Barn) ใช้ร่วมกับสกรูและไม้กระดาน', qty:1},
+  {id:'nail',name:'ตะปู',price:6,img:'https://itemhayday.com/img/product/7QYOaAScrew.png',cat:'เครื่องมือและวัสดุ', desc:'วัสดุขยายไซโล (Silo) ใช้สำหรับเพิ่มความจุในการเก็บพืชผล', qty:1},
+  {id:'axe',name:'ขวาน',price:6,img:'https://itemhayday.com/img/product/rgvWzyAxe.png',cat:'เครื่องมือและวัสดุ', desc:'เครื่องมือตัดต้นไม้เล็กและพุ่มไม้ที่หมดผลผลิตแล้ว (Bush)', qty:1},
+  {id:'saw',name:'เลื่อย',price:6,img:'https://itemhayday.com/img/product/d0NQwfSaw.png',cat:'เครื่องมือและวัสดุ', desc:'เครื่องมือตัดต้นไม้ใหญ่ที่หมดผลผลิตแล้ว (Tree) ใช้เวลาการผลิตนานกว่าขวาน', qty:1},
+
+  // 🍞 อาหารปรุงสำเร็จ (Cooked Meals) - ขายแยกชิ้น (x1)
+  {id:'bread',name:'ขนมปัง',price:15,img:'https://itemhayday.com/img/product/IydBZe02%20Bread.png',cat:'อาหารปรุงสำเร็จ', desc:'ขนมปังอบใหม่ ๆ ทำจากข้าวสาลีในเตาอบ (Baker Oven) เป็นผลิตภัณฑ์พื้นฐาน เปิดใช้เลเวล 2', qty:1},
+  {id:'cake',name:'เค้กแครอท',price:15,img:'https://itemhayday.com/img/product/feTOAX21%20Carrot_Cake.png',cat:'อาหารปรุงสำเร็จ', desc:'เค้กแครอทจากโรงทำเค้ก ใช้แครอทและน้ำตาล เป็นขนมหวานที่ได้รับความนิยม เปิดใช้เลเวล 17', qty:1},
+  {id:'burger',name:'แฮมเบอร์เกอร์',price:15,img:'https://itemhayday.com/img/product/d6ZUIV18%20Hamburger.png',cat:'อาหารปรุงสำเร็จ', desc:'แฮมเบอร์เกอร์เนื้อ ทำจากขนมปัง เบคอน และมะเขือเทศ ในเครื่องทำเบอร์เกอร์ เปิดใช้เลเวล 33', qty:1},
+
+  // 💎 ไอเท็มพิเศษ
+  {id:'diamond',name:'เพชร',price:100,img:'https://img.freepik.com/premium-vector/diamond-cartoon-style-vector-illustration_761413-4131.jpg',cat:'พิเศษ', desc:'ไอเท็มหายากและมีค่ามากที่สุด ใช้เร่งเวลาในการผลิตหรือซื้อเครื่องมือพิเศษ', qty:1},
+  {id:'gold_coin',name:'เหรียญทอง',price:100,img:'https://img.freepik.com/premium-vector/cartoon-drawing-stack-gold-coins-with-dollar-sign-it_761413-4292.jpg',cat:'พิเศษ', desc:'เหรียญทองสำหรับซื้อขายสินค้าและอัปเกรดอาคารต่างๆ ในฟาร์ม', qty:1},
+
+  // 🔨 ของตกแต่ง (Decorations)
+  {id:'fence',name:'รั้วไม้',price:10,img:'https://img.freepik.com/premium-vector/wooden-fence-seamless-border-horizontal-cartoon-hedge_80590-17024.jpg',cat:'ของตกแต่ง', desc:'รั้วไม้คลาสสิก ใช้สำหรับแบ่งเขตพื้นที่หรือตกแต่งรอบบริเวณฟาร์มให้สวยงาม', qty:1},
+  {id:'bush',name:'พุ่มไม้',price:15,img:'https://img.freepik.com/premium-photo/cartoon-green-bush-with-lush-foliage-isolated-white-background_1267971-1608.jpg',cat:'ของตกแต่ง', desc:'พุ่มไม้เขียวชอุ่ม ให้ความร่มรื่นและเป็นองค์ประกอบในการตกแต่งฟาร์ม', qty:1},
+  {id:'pond',name:'บ่อน้ำเล็ก',price:25,img:'https://img.freepik.com/premium-vector/pond-icon-vector-cartoon-high-quality-illustration_1323048-54596.jpg',cat:'ของตกแต่ง', desc:'บ่อน้ำขนาดเล็ก เพิ่มบรรยากาศสงบและเป็นธรรมชาติให้กับฟาร์มของคุณ', qty:1},
+  {id:'tree',name:'ต้นไม้ใหญ่',price:25,img:'https://img.pikbest.com/origin/09/28/38/74gpIkbEsTsDu.png!w700wp',cat:'ของตกแต่ง', desc:'ต้นไม้ขนาดใหญ่ ให้ร่มเงาและทำให้ฟาร์มดูเต็มอิ่ม เป็นธรรมชาติ', qty:1},
+  {id:'statue',name:'รูปปั้นชาวนา',price:25,img:'https://img.pikbest.com/png-images/20251107/cartoon-farmer-holding-freshly-harvested-pineapples_12013953.jpg!bw700',cat:'ของตกแต่ง', desc:'รูปปั้นที่ระลึกถึงชาวนาผู้ขยันขันแข็ง เหมาะสำหรับวางกลางฟาร์ม (รูปปั้นสไตล์ชนบท)', qty:1},
+  
+  // 🎁 เพิ่มเติม
+  {id:'apple',name:'แอปเปิ้ล',price:10,img:'https://img.pikbest.com/png-images/20250101/cute-cartoon-illustration-of-a-red-apple-with-leaf_11328990.png!sw800',cat:'พืชผล', desc:'ผลไม้สดจากต้นแอปเปิ้ล ใช้ทำพายและน้ำผลไม้ เปิดใช้เลเวล 15', qty:10},
+  {id:'cherry',name:'เชอร์รี่',price:10,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV5YEl4-1yVwt7gwOnl6kLObJCzRPKkpyxyg&s',cat:'พืชผล', desc:'เชอร์รี่หวานจากต้นเชอร์รี่ ใช้ทำเค้กและน้ำเชอร์รี่ เปิดใช้เลเวล 30', qty:10},
+  {id:'cocoa',name:'โกโก้',price:20,img:'https://media.istockphoto.com/id/1192939524/th/%E0%B9%80%E0%B8%A7%E0%B8%84%E0%B9%80%E0%B8%95%E0%B8%AD%E0%B8%A3%E0%B9%8C/%E0%B8%A0%E0%B8%B2%E0%B8%9E%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%81%E0%B8%AD%E0%B8%9A%E0%B9%81%E0%B8%A2%E0%B8%81%E0%B9%80%E0%B8%A1%E0%B8%A5%E0%B9%87%E0%B8%94%E0%B9%82%E0%B8%81%E0%B9%82%E0%B8%81%E0%B9%89%E0%B8%AA%E0%B9%84%E0%B8%95%E0%B8%A5%E0%B9%8C%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B9%8C%E0%B8%95%E0%B8%B9%E0%B8%99.jpg?s=612x612&w=0&k=20&c=bNo6ZgK5H4xKQh33Bfvpvumi2t0CqsixRPjT_4pwXTs=',cat:'พืชผล', desc:'เมล็ดโกโก้จากต้นโกโก้ ใช้ทำช็อกโกแลตและมอคค่า เปิดใช้เลเวล 70', qty:10},
+  {id:'coffee_bean',name:'เมล็ดกาแฟ',price:15,img:'https://img.freepik.com/premium-vector/cartoon-coffee-beans-sticker-design-creative-projects_1322560-20933.jpg',cat:'พืชผล', desc:'เมล็ดกาแฟจากต้นกาแฟ ใช้ทำเครื่องดื่มกาแฟหลากหลายชนิด เปิดใช้เลเวล 42', qty:10},
+  {id:'potato',name:'มันฝรั่ง',price:15,img:'https://img.freepik.com/premium-vector/potato-cartoon_119631-566.jpg',cat:'พืชผล', desc:'มันฝรั่ง ใช้ทำมันอบและฟิชแอนด์ชิป ปลูกได้ที่เลเวล 35', qty:10},
+  {id:'rice',name:'ข้าว',price:6,img:'https://i.pinimg.com/736x/33/42/04/334204bf1dd5465e07f2b235ec1289d3.jpg',cat:'พืชผล', desc:'ข้าว ใช้สำหรับทำข้าวปั้นและข้าวหน้าต่างๆ ปลูกได้ที่เลเวล 38', qty:10},
+  {id:'fish_fillet',name:'เนื้อปลา',price:40,img:'https://itemhayday.com/img/product/0OetpXFish_Fillet.png',cat:'ผลิตภัณฑ์จากสัตว์', desc:'เนื้อปลาจากทะเลสาบ ใช้ทำซูชิและอาหารทะเล เปิดใช้เมื่อซ่อมเรือตกปลา (เลเวล 27)', qty:10},
+  {id:'lobster_tail',name:'หางกุ้งล็อบสเตอร์',price:30,img:'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEhUTExIWFRUVFRgVFxcYGBUVFhcYFxgYGBcXGBUYHSggGBolHRgXITEhJSorLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGzYmICYuLTIwLS01LS0tLS8tLy0vLS81LS0tLS0tLy0yLS0tLy0tLS01Ly0vLS0tLS0tLS0tLf/AABEIAQsAvQMBEQACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAAAQQFBgcDAgj/xABHEAACAAQDBAcDCgMGBQUAAAABAgADBBEFEiEGMUFRBxMiYXGBkRQyoRcjQlJUcoKxwdEzYpIkQ1OisvAlY3PC8RU1k6Ph/8QAGwEBAAMBAQEBAAAAAAAAAAAAAAMEBQYCAQf/xAA4EQACAQIDBAkDBAIBBQEAAAAAAQIDEQQhMQUSQVETImFxgZGhsfAywdEGFCPhQvGiJDNSYsIV/9oADAMBAAIRAxEAPwDcYAIAIA8s4BAJ1O7vtr/vwgD1ACEwAsAEAEAEAEAEABgDwTACqsAeoAIAIAIAIAQwAA3gBYAIAIAIAxjpU24aa7UlM5WWhImOpsXYb1BH0Bx5nuGtOtWd92J0+zNlRVPpq2r0XLt7zTdkJzPQUrvdnNPKYk6knINSeZ/WLUPpRzuISVWSXNjbY/apMRp+tlDI4tmlk3yki69q2qkcbcDyjzTqKfgT4zByw0o3d1JXT5r+idpJ4mKGHeCDvBBsynvBBESFM6wAsAEAEAEAJeAPJN4A9BYAWACACACAIDbPamXh0jrXGdjcIl7FiBc62NgBxty5xHUqKCLmDwcsTJpOyirt8kd9q6h1oKl0uHFNNZSN4PVkgjvEepfSyCgk6sU+aMv6Ldt2lOtJUuWlObS3Y3MtjuUk/QO7uPcdKtKtZ7sjotpbKTp9NRWa1XPt7zXxMyuEO5vcPO2pU99tRzF+UXDmBzABABAFT6StoDSUhyG02d82nMadt/IcebCIa9TcjlqzU2Rg1ia/W+mOb+y8fa58+usZx3M1dH0NsHUmbhVOxLE9QVufe7F0/wC3Q+EalN3ij87xkd2vJdpkPRVj3s1TJJPzc0CVM5dq2VvJra8s3OKEJdHVOvxeHWL2anFZxV14a+av4pG4huqqbfQnjMO6Ylg3quXzBjSOHJWAEgBYAIAIA8kQAoEALABACQAsAEAfPfStj3tFTNsfm5QMpOXZvnbzYHXlljNqS36vcdxg8OsJs5uWsld/byXqzXdtZ5l4VPYFgfZ8ot7wzAL+up8Yv1HaLOPwkd6vFdp88IsZh+iQVkbxsHjBr6HI7fPybKW43GsqZ52seeVucX6FTfjnqjiNsYNYav1fplmvuvnBoteGVfXS1e1juYfVYaMvkYnModXgBYAx7pJqDPrGX6MhRLA4ZiA7n4qv4Iz8RLenbkdjsamqWGUuMs/DRfd+JnNUvaI77fpEBu2vE3nosnFsKp7tcgTFvyCzXVQfAARpUXeCPz/aUVHFTS+ZHz7hwspFwbG1xuO/Udx3xnVl1mdxsmX/AE68D6CpMQNVhsqpBvMlhZhP80q6zPUZ/URpUZ78Ezhto4f9viZ01onl3PNFpppwdFYbmAPrEhSOsAJABeACAFgAgAgAgAgBIAiNrsV9lo504GzKll++3ZT4kHyiOrPcg2XNn4f9xiYU3o3n3LN+h8z4nqlrgX4ncN2ptw4xm0V1kd1tV/8ATvx9j6D6UJ5XCqghgCVlrfmGmIrAeKkxo1naDOH2bBSxUE/mRglKvaA77fpGbc/QLWiaN0b1BkViD6M4GU3K9i6H1Ur+OJ8PLdn3mHtmkquGb4xz8NH+fA0iibqqubK+jMAnL4m6t8VJ840DjSagBCYAxesOZXnnXOXneTln/I2jKbvdncwjZxpcrLyyM/fnHg2WrG49D0zNhwW6kLOmrYDUXObK3M9q/gRGjh3emjgttR3cZKxhUgWLjLls5GXflsT2b8bbvKKNX6jr9lNugrvl7Gv9C1cHlVNM2oVlcA8pi5WHh2R/VFnCSyaMD9S0rVo1FxVvL/Zc9k5h6oyibmS7Sz+EkfpFw5om4AIAS0ALABABABABABACQBmnTTXZZUiQD/Edph8EFgD4l7/hipi5ZJHS/pqletKo+Ct5/wCjHKse72c3a929s27s34X3X74q0l1joNqO1BtPn7G8dL8wLhpW6gNNlLYjfZs2VeR7N/AGL2IfUZx+xo72MjcwxecZrO+SuaBSHKiTx9DJO/oImfpHtO2ZjzW83SfG8fPI0rH2yVFLNHEuh775WH5H1jWOELBADevfLKmNyRj6Ax5k7RbJKUd6pFdqMp2rldVRm31EQedh+V4ynlE7LAy6TE582zNTHk6CSNd6FqlvZalCBlSbnUjRiXW7X52yrY/tF/CvqtHD/qCkoYhPmjFcMPY79PyirV+o6TZeVBeHsaH0O1eXESl9Jkl1t3jK/wCSmJMK7TKP6hjvUL8mvwalhZyVtSnBirjzVSfjmjQOLJ+8ALABABACQAsAEAEAJACwBh3TJV5sQVL6S5KrbvYsx+BX0jPxTvM7P9PR3aG9zb9rGeYm3zZ8/wAojpfUX9p/9h+PsbV0zVTeyU6ADLMmBmJF2GRLi3K9zr+8WsU7ROb/AE/SU8S3yRkKiKB3EUaTslK62jF/quh+IHwtHpZxOfx8ujxGXNMu2PktTUjcesln1lPeNWDvFM46vHdqyXa/cs0k3UHuEeiI44mt5Mwc5bj/ACmPFT6H3EtB2qxfavcy7b/Wlljmyf6WMZE5dVHX7JyxEr8n7ozNhBHStE5sptL7EKoFmVZ9NMUZRdhOVT1TDkdSPxa7os4eputpnO7dwbqwjOKu17cfsU6hnAADu84+VFc+4GsoJJaFy6L5lsUpzzZx6ynEKGVRHnast/CVH3e6NnmC2IX+tKQfFx+kaRxJYQIAWACACACAEgBYASAFgAgD536Upn/FKg8jLHpKSM2vnUZ22ynu4Sm+/wB2Uuumgi3C0Kasz3jaymmnoXLajaX21aRQzMsillq2YEEzioE1jffuAv3G2+PuIqbzSR42Fg3SjKclZv24fchFWKzOiiab0dp/ZnHKY3l2V/8A2PVPNM5nbMl067l7stuPkrSUw/nlL/8AW0atP6F3HJV3erJ9r9yy0nuL4CPZEdHW4I5i0Grn1OzuZTtMpamlg71Kg+IUqfjHPyfVSZ2mBdq8muN/e5nNZKsY9wd0dFB3QzmpcWiRHirT31YY+zljYC5+MSxbMerTis2Xfo4pxLxCkDWzs7W1vuksSLX+NtDpxBixSh1kzHx2Jbozg/mZrNT/AO5L/wBFP9cyLhzZaIAIAIAIAIAIA8wB6gAgAgD5t6U5n/FapR9ZCe68pD+sUa0eu2zqtnVm8PGnHt92VeXLiFyNOnSV+0kJUuw/OImzWpU9xWJbB6AuwJHZ77i9t9ue4/Hfa0fLHnEVlBWWpoeBOFpnVeOYDl7oAt5nztePG/1GonPYuLeIjKXZ7lo2x0FLL/5l/wChMv8A3RuJWVjkG7u5ZacWVfAR9Ph0gDNNppFjOl8phYeDHOPgxHlHP4hbs5R7ffP7nXbPnvRhPst5ZfYz/E6ePFOR0VGZEyJOZgp0GtzyAFyfKLSJqr3Y3R2qVSSDYqXK33BrllsRqOyNb9+t4lVkjGrb1Wd7ZfPnYMcBrGSvpJt9RUSr2sOznVSLDcMtxE1F9YzNp010XmfQ+NNkrKZvrK6n8JUj/UYvHKligAgCrVOOVMxpkyllq8inbK9756hl/irJINhlFxc3zMLDdELnJ3cdF6mhDDUYqMaztKWnKPK/f6LMnaCrWckudKYNLmLm8iND3G+hB/SJYtSV0UqtOVKbhNWaGVNjqvXTaTS8uTLmd5LFgw8AMnrHhT67j8+aFieG3cNGtzbXhw9mdlqjTyJkypYBZRc5t5MtSchPNiLacTHuTSV2V6dOVSahBXbIimx2pltLmVUtUp6hsqWBz05b+EJxvY59BcWysQDESnJZy0foXZ4alJSjSd5R15S527vVZlh67K4RvpXKHnbevjxHMX5GJjPHMAEAfK201SZtfWTG3mpmjyVyqjyAA8oo131jqtlwtSG1ONRFZm9Qj1kTtFQrlDsw3XKkgcdNeRsRzhZasmnVknuxXiScjWwW2WwF8oUneeAFrEnTuitVnwRG42zevfcu2zMi5ky/rTAx8FOc/BfjHzDrenGPb7Z/Yw9oT3YznyVvPL7k9tA3WV0pP8OXfzdv2QesdCciW1RpABAFL27psrpN4OuRvFbkeoJ/pjG2lDdkp88vnzgdDsarvRlT4p3Xj89TPK+T5xQgzp6cit1KlGuNDzEW4MvRtONmRtUSWuTcneTEqZVrRSdkOdl6Izq+klqL3nyyfuqwZj5KpMWaH1GDtV2pM3vaWZesp0G9UZj+NlA/0GL5yJaYAhNq610lrJkm0+pfqZZ+pcEzJtv5EDN4gRHUbSstWW8JTjKTnP6Yq77eS8XkO8Nly5HV0kpbLLlX+6oIVc3MscxvxytHuKUVZFerUlVm5y1ZQ6Dan2DEqukm2WnLmahOgls6hzb+Vidw3HzisqipzcXobTwM8XhoVoZySs+22Xol5FKwbapExX25lISYzAqT7ofs3JtuW9/LviGFT+TeNbEYF/s1TT4W8nf53l1xXakV2JUtHJs9MJomOw1WcZa9Zw+ipG7ifCJ3UU5qK0MenhJYbDTrSylayXFJ5eb9i+Ygsuf1lJMW4eTc96sWU2PAqQDfhmEWJJNWZj06kqc1OOqIvBXmTpD08xv7TSvkLcyoDSZvg6lb+LCPFNu1nqixi6cVJTh9MlddnNeDJvDqoTZavaxOjDirDRlPgbxIVB1AHy3tXRGTiFXLb/HmMPuuxdf8rCKFf6jrdlO9JDSnGsVmb9BdYlKTM1lucoNwL6en+98RzlkWpKMetbMsdBJinNlGpI0LYSmzTGmcJa5B95rE+YAH9UX9mw3pufLLz+epzG2am7BU+Ld33L56HTAT19XNn7wXOX7qdlT5gA+cbJzxcbQAsAR2PYeJ8lpfHep5MNR+3gTEGIoqtTcPlyzhMQ6FZT8+7iZNUpqVIsykqw4qRvBjnLOLs9TuISulJaPNFdxOn3xYpyNCjIrs6LCPNXVs0voR2dLTHrnGigy5V+LH33HcB2b/AMzcov4aP+RyG28Qrqku9/b53FwwzNUVsyaQQA2RQRYhU0Gh3X1P4otnPlzgCt4Ywn1c+qY/N04NNKJ3XFmqH/qCpf8A5ZiKPWk5csvyXa38VCNPjLrP/wCV5Z+Jz2RqmnTaieQbTWQL3KuYKPQ3PeTEpSMP2tqSaqcpbMROmS11uSBMmEeW/wCEZUk3Jvl+T9Bw9SlSpUqdutOKy7oq4wmSux8f9+URKXWNWpRvQ+fNB5sZO/t9Mua39okg2O68xGtoeNgLGLVNNSRzeLqwqUKltYpp+RvOLzGWup2A0yML87kXHlp6xoHGiYv/AGeskVI9ydalncrkkyH8nul/+YOURS6slLnl+C7R/loSpcY9Zf8A0vLPwHsg9VVMn0Zw6xfviwmAf5W/EYlKRLQBjvTbs9Z0rkGjASpviPcfzHZJ7l5xUxMf8jf2LiFd0nrqvv8AO8zOUeMUGdfR5liwun3RXqSPdaZYaddwAuSQqjixO4KOJitZydlqUJyybei17DQa8+w0IlA/OzOyLfXf32Hco3HuXnHSYaj0NNQ+XOHxmI6es58OHcO9kaDq5Q04Wicqk/ACQAsAVbaXZWVWEuj9VPWwLAb+QdePcR8RpFTEYSFbPRmvs7a9TCLckt6HLl3GQY5h89JsySwzmW2UlDdb2vvsDx4iMlw6KW62drh8RRqUo1Y5J89fuV+ppHU9pSvjE8Wj249JoyW2S2onYbNaZKUOjgCbLbTMFJsQw90i51137jFilVcWZO0tmRrQvfT55G67J7QyMQk+0SVKnMUYOAHDKASDY6ixFjfj5RoQmpK6ONxGHlQnuSHm0OIez002aBdlXsD6zt2Za+bFR5wnLdi2MNS6WrGD0evdxfkV/FZXsmHyqVTd5gEtjxYntT3/ABHN/XCEd2KQxNbpqsp835LgvBC7S4h/6bhpK6TWGRP+o41P4QCfwiI69Tchcs7Lwn7nEKD0Wb7l+dDDElXsTv5+cZV+B+lwoqyfL0OkwaHwjzxLE1eLSI2ahQgg2N7gjQ3HEHnE8ZXMPEUNy8WtfU+gsAxc1+HS6kWM6VqwH+JL99bfzrqB/OI06ct6NzgcZh+grOHDh3E1ilMtbSOgOk2XdG+q29G8VYA+UfZx3otHjD1uhqxqcn6cV4oZ0kx6ylp5y2WarKzA6AOpKTkNuRzac1EIS3opn3E0uiqygtOHc816HfavaSTh8jr5wYjMEVVsWZiCQNSANATfuhOairsYfDzrz3ImEbW7UzsTmLMmKqIgYSpa65Q1sxLHeTYa6btwjPq1XJnY7N2ZGjG99fnkRFPRuT2VLeAivJo1lF09SwYJQT2mS5KjIZjZVLmy38bE8OAiBQ6SW6mea+Io06cqss0ld21NWwnAafDV6+omdZN1AYj/ACyk337/AMheNbD4OFLPVnFbR2vUxS3Irdhy597+3uNaZZldUda65VGiL9Ve/vO8nw5RbMgvMmWFAA4QB7gAgAgDw0sXzWGYAgHjY2Nr8rgQBWNpcEExDU08vJUIcxFgDNA0ZHA0Zre6fAXsYqYrDKot6P1I1dn45wao1X/G+f8Aj2rlnr56lAxanlVUoTEI1F7cQYyVM6jDznh57syiVdMVJVhE8ZX0NeSjOPYesFxKdTTFmSnKlGLL9XUAG68QQAD3RKqjTujOngaVWMozWvxGmYBtqK32ORVEI6z80xj2VmmWpaSByJcoTwuo+sBFqNXfcUznsRs6WFVWcFdWsuy+vpfzL1ieEvNq5M0kGVLXdxDXuTbkbKPKLZzpnPTJiBmVMuQD2ZMvO3335juAX+oxnYyfWUeR2f6bw6jRlVesnbwX9+xVMZo+pZJZ3iWt/E3vFSSs7HTYKr0sHJc2R5jyXDhVpdT3ax6g7SK2Lgp0n2Zl/wCg3FCs+fSk6OomryDIQreZDD+iNHDS4HDbdoWtNcHb8fO01HA6Z5QmS2FkExur3e4TcDutu8otnOGf7Q7Zii9sk0rB3efmRgLrJeYoM0HgxDKxHexvuIipOqobyR0OG2dLFqlOasrWfalp6NLuRmWN4lOqZjzJrlmdgzfV7IIUBeAUMQPE84quo27s6KGApUoxjBafGeKWnLEKoiKUrZmjFRhHsL3hFNLpZXWTCNBe3EmIHPMycROeInuQLvg1AlNJ9tq1vOPaAIDNLDaIiLuDkHU95F7CNXC4ZU1vS+pnL7Rx2+3Rov8AjX/LtfNX089RrIlvXVPWzEyrYKi7yqgk6nmSST6cIuGSXSkpFliyiAHEAJaAFgAgAgBvX1ayZbTGvlW17C5AJAJtxAvc9w4x8bsrnunTdSSitWUfaLYhnc1FG4AftNKGVAb8UZRa539rffeIoYjB7/WgdBgdsRpw6HELT/LNtd6fLs8in1uABzlcOk3X5uZdW8V4OO9bxmuFSm7NG7TxytvJpx5rTx5eNiuV+CvLJ0vHuNVcTQhWhUQwqpVlRTyLHxY8fwhYmTPkYKTl5eXxlh2d6R6yisrn2iSNMkwnOv3Jup8jcaaWi3SryWTOe2hsem+tDLu08jslWK6uaeQVWbOQ2NrhEF7G38qgRTqS36xqUYPC4KMOKj6v/Zz21e9UxH1V/KPlT6i/seNsMl2sgDHg1BCL6c4HmaumP9iq32SslVLg5EBuNQWDS23DcRa51tu7ovUXuyucftOKq0tyOtl6WJXaXpHqqu6SvmJe5gjAs28EdYN47xaPVWu9EQbO2NC+/PMrFJKurqPq5h4qeH4S0VGzpJQUHF+Hn/dh/QYK7kaWiGVVLQ+zrQgix0WABDlQM83hLl3Z/FhuQd7WjwoVKmSRnVMarbzso83p4c/C5cNnNh2WYKiscEJ2llHLMAtxmMwtcb+zy3xpYbBbnWnqYWO2zGcOhw61/wAs15JffyJzaCZKn0Yn2bKjB0vdSe1kvbvBNr8xui+ndXOfqU3Tk4y1RMYXKQS1KbiL3j6eB3eAFgAgAgAgAgDxOlBlKncwIPgdIH1Np3RVtisTVQ9BMcCfTOyBTpmlXJlMvMZbaDUAC8V6MrXg9V7GptKjvNYmC6s0m3ylxXmSmKTJZGSrkhpd9Hy9ZLvwJFs0s9+4c4nlFSVmjOp1Z05b0G0+whKzZSXMTPT1F0t7rnrpdhvAmXzr5lvCKFbARlnF29TVw+15xfXjftWT8tH5Io1dsxMaWJrSXysMwdRmGXcCctyugG+0Up0q0eslddh0VDadKMnTcs1weX9FCxaSAcqHMBvI58okpS4ssYmuqiUUTmCzurTPyY/6QIgv17l6dNTe52I5YnVdY+but6R7buy5h6XRx3RmY+E47pqbTO5sosd6jmbnW4Gnjyj1GN3mVMTiLRajyfP58zImuxEtomilQpuBcj9BfgPHjFpyOe6LJbwYTJBNnYKDuJ58ohrOyui3hcQoJxZfKHZiYsszVkvlUZi7DKMv0iM1i3ZJ928RQpVpdZrLtK9fadFyVNSzeiWefsXmi2Uly0z1FRZLXyoepl2PBpl87eRXwi7RwEY5yd/Rfk57EbXm3aEbdrzflovJkxhFRKtko5IEsHWZl6uVfjbTNMbw0/mi9GKirJGTVqzqy3ptt9pH7a4oGCUMtwZ9SyyyoucsskGazW3DJfQ6kXtuiGvK9oLV+xo7NouLeJmurBN35y4LzE2xmALIpE4kMw/kTRQfFrH8BiwsjLk23dliwuTllKvdA+Dq0ALABABABABACGAK7tFs5KrCGDGTVSx2Jq+8BwDD6aX/AF3aiIqlJTz48y9g8fPD3ja8HrF6P8MgJG19TQP1OKSiUOiVEsFkbuPP/VzB3xEqsqbtU8y/LZ9DFx38HLPjB6+Hzx4EpN2soWkTRTzBmZGsoR1uzCwJ7NuUHiqck0nn3MhhsnFU6sekjZXXFfkf4fj1LLlS065RkRV1DDcoHER7Vamklcgq4HEznKW5q2+H5ILbDGcJaWxmCTNmsrLLIl53DW7N2AuupG8xHUrUWnmmy1gsDjlUjZNK6vwWplhkWklRrqfyEY8JXlc7rWoRSzpsvQHTkyqw9GBEWk0R1KdRPKT+dqHNFiBFzMycLDIq3sSSRlX3rgW3DUx7ju8UU637jSL9/uxlXVcybvBCgk21O/mePG3K8enJHiGHq6u7GDCPlxKJvuymN4OEDSBJlOAoYmX1bXtrZmW7a33GLirUY8UmcpWwOPlqm133Jyux+kmSnTrlOdGXQMfeBHAd8enWptWuQ08DiYTUtzRrkRi7T0Hs8pal1JVFJVpbsAyra/u25+seFiacYpSefcyeeycTUqydON1d8V+SNnbX1Fc3UYXJ7A0aocFEUch9X/VyHGDrSqZU14k0dn0MJHfxks+EFr4/PHgSdFh1PhamdNczqqYLFzbrH4lZafQS+/yud0S06Shnx5lHGY+eItBLdgtIrT+2ccFp5lTUGfNFibWA3Ko3KP8AepJiUoF2AgAgBIALwAsAEAcqjNlOQqHt2cwJW/eAQbR8d7ZHqG7vLe07CFw/aMdd7NUp1E86rreXNHOW9hc/ynXx3xFGsnLdlky7VwLVLp6L3ocea719/YmammVwL3BGqsNGU8wf9g8YmKA3qsNWfJaTUBZqto1xluOB0OjDfcW11Fo+NJqzPdOpKnJSg7NFKxro9opEszZSzFfMqr84xAzsEJ7V+DGK1ShBRukbOE2pialRQlK6zfkmznP6PMKl+/UOv3p8tfzEfHRoR1fqeobV2lP6U33RKxtbhOD08v5mfNedYlMjiamYbg5tYC/I3iKoqO61F5mjgq20pVU60erda5eRAYPWLmGfcHW/3ToT5RnRjuyR0VaLknu62fnqPtrqISpoy7iD6j/zE81ZjZdd1abuQBiM1DxOawJ7v/EIq7Iq01CDZEzW18NIso5+pK0rGj7HYTg0+UOsnzkm5VL9YyykDEdoIQLEXvvN7WiaKoaSefaZVattNPepR6v/AK5+ZaZHR5hUz3Kh2+7Plt+QiRUaEtH6lKe1NpQ+tNd8Tpg3R7RT5fWTVmMwZkPzjAHq2KA2W3BR5x9p0INXaPOL2piYT3YysrJ+auXOnwxZEgSaULJVRZeyXA5m2YFm43J377xZUVFWRjVKsqknObu2RdPsmuczJs5prnezAAnu36DuEfTweqvHVlzfZKSV108C7AG0uUOc2ZY2PcLnw3xDOslLdjmy/RwLdPpqz3YcOb7l9zptFiTSKdSzL17MuUKCASGBaykk5ctwfHhcRKr2zKU93ee7p26kxRz+sRXta4vblH08naACACAPLC8AeXl3FrkHmN9+cAQ+NyJE6WZVaihTuc6Jfmr/AN23cT5mPE6cZq0kT4fE1cPPfpSsyvyujumOsmrngcAJiso8MoB+MQLCQWhqPb2IkutGL8DnO6N5pvlxOoUcu0R3aZ9RB4bhvM+rbWabpRv3EHimyZp/4mKLMYkKU6sCYA5yF/4hbs3zWtwiGWGjDO5fobWlWdo0bZN9mWdtLZ2sRNdSYbLv1mIVc8jeJaqp8LTY+OFFayZYpV9pVPopRj3ldxqfQ5bU9PUXt/EmzVuD/wBNFt8RHhulpEsRp4+L368lbkl/r7kUtRYaDz8YhsaTm7qSHM3GGdQrm+Xdff6wcWSUsRSg3JK1xu1asOjZI8fBaDKorCYljBIzsRjXNjRmiSxQlPK5asBqKHIBUU9RfKPnJU1bkjQ/Nuthz3mPO9SvaRJGlj2lKjJWto1/sslDSYbMt1eIVcgncJqqx8LSo9KFF6SZDVr7Sp/XSjLuJXC9lDUfw8TWWwZkCGWDMYIxQTLGYG7Vr2txhHDRnxK+I2rKg0nSvdJ9mavbS2ROSejiaLZsTqGHLtKO/TPoInWG4bzM97azbVKPkdZvR3TDWdVz7DeDMVVPjmBPxg8JB6hbexEV1YxXgO1xSkoZfUUSLMb+U3W/1pkz6R7gb+ETwpxgrRRl4jFVcRPfqyuzjheDzZ8zrp7FmPE7gOCqOA7o9kBdJMoKAo3CAPcAEAJACwAQB4mIGBVgCDoQdQYAqGJ7UUNCxlyUEyeTYpKFzfgruATv4C5HKIZ14Qy4mlhdlYjER37WjzeSIpqLF8S/iuKKnP0BcTGHDMAc3iCV8IiarVF/4ovKWzsE8v5Zf8fx7nOu6PJFLJzmbNmduWrLcKhDzFRjl1N7Mdbx4lhlGN276e5Yo7bqV6m5GCjk7PV5JtZ6cOQ9rKTBKEHPLlsQbW7VQ1xwINwp8bRI6dCGq+5Uhi9qYt2hJ+Fo+1iibZbYy569VS0cmXKykZnkyzMBbTsAXVNLai58LRBOtDSKRq4bZWJgnOtUd+xu3jzKFJVm0tYg277jhbnEcrReZdoynVhlpzOho34/79I876J/2VWWdzw9Cw1v+celNEc8DUSu2NnpzwMSKSKc8NNaM4MrGygXJIAsNSTuFuce42KVVzirM0zY/bKXIHV1VHJmSyoBaXJlLMJXTtDRXFr8j4x4hWhpJLyLGI2TiZRU6FR5c5P0L3R02CVwGSXLVidF7VO1+QAsG8rxOqdCei+xlzxW1cI7Sk/G0l63GVD0eSKmTmE2alnmqq3DS8qTXVDl0JNgNbxHHDKUbp219y3V23Uo1N2UFLKLfB5xTfZ6HRaHF8O/hOK2nH0GuZijjlBObwALeEe0q1Jf+SK7ns7GvNdFL/j88u8kqDaahryJU+WJc/cEmCzX5JMIBvfgbE8jEtOvCeXEo4rZWIoR37b0eazRO02AyJZFhv3eXDxiYzSXRQBYCwgBYAIAIAIAIAIAru2OITFRKanP9oqTkU/4af3k08go484hqyaW7HVmhs+jCUnVq/RDN9r4LxZ1wTAKaiypJkjOR2ntdrcSzncCeA8hobfadKMNER4vH18U/wCSWXBcF4HHa3a+TQqFPzk9/wCHJB7RvoCx+it+PHheFWqqazPWCwFTFTsso8XwRTK2Vi1XKmzam0qQJbt1fuaBSdEsWbcPe8oqt1qkW5KyN2l/+dhakIUnvTulfVa21yXlftJyn2NopcpZtVNM1TZgXbImtyoABudDuub28Ymjh4vOWZnVds14ycaSUOGWb9fwWDZ6qpXDJSywqpY6S+rU3vuFgSdDrbjE8YqOSRk1a1Sq96pJt9ruYulPkq5ztqVmufMTdf19Ywas+u12n6Mop4aCXGK9UQc73j4mPSNaP0o4zTofCPaIq30MZS/eHjEstDMp/wDcVxxs9LJq6e28z5VvHOtoki+sjOxUF0U32P2Po/H6qlUrKqZYcTAzayxMAy5bkixN9RuHCNCUVLJo4ylWqUpb1OTT7HYrNdsFQzkadSzWk2DXMtiyaakFSbjwBEV54WOsXY2sPt3EZQrRU125Pz/pkLhkrF6STJnSAs2Q0tH6v37BlBsU0YG5J7HPWIYutCKaV0aFdbMxNWcKj3ZptX00y1087dhdtkNsJNcpUdienvyidRbQsp+mveN19baRbpVo1FdHP47Z9TCzs848HwY5xvZ+mrQyT5IzAdl7Wax3FXGpHcfMai6pSjPVHnCY+vhXenLLlwfgMdmKiZMlvSVBIqaYhc/FlH8KcOdwBfwN95EfKMnbdlqiTaFGCkq1H6J5rsfFeBP4fVdYuujqSjjky6HyO8dxETGeOSYA874A9iACACACAIiVVUvtN1IaocdWdCXVVu2U39xd5tpc84+bqvckdWbgqd8r3t28yM2y2pNMVp6dDNqpvuIBfKDftEeRsO4k6DWGtW3Mlm2aGz9nfuL1Kj3acdW/YjMA2Wl0paur5geoJDFm1WWTwXfnfhfuAG6PlKjZ7082SY7aSnDoMOt2mvN/12eZYcFxL2tJoaXlW+VQdSUYWu3C+/d3b4navkZEZOLUlwIqQpmYUoOryBka/OmfI/qEPrEdF9ReXkXdoxSxM2tH1l3Sz+5YMEpkWWGQWzKCYlKJi/SDTNS4jMC9oTfnVUcphOYHkcwb4Rj4mklUfmd/snFKtgop6xy8tPSxUZrTCToB8Y8LdNXexEl1UkN5qvbUiJE4larCuleTG92vw/KJMim3VT4Fv6K8I9pxCUbi0j59wTr2DZbDj2ynrEtGF5GVtHEuFCS4vL54GsYnN63EFUaiUgU/eY5j8MsXjlST2rtKopyywA0wdUoGnbnESwfVvhEdZ2g/mpd2dFPEwb0T3n3RzfsesTxMUns8pVzBuzbcQiKBcd9yse0rKxUnJyk5PiQW0+x61DCso2EqqQ5uKhzbc1tVfXfxvrvuIKtG73oZM1sDtJQh0GIW9Tfmv67PLk32xu1RqC1PUIZVVK95SLZwN7Ac91x3gjQ6faNbf6ryaI9obO/bpVab3qctGvb53EjWV1Ik7rJjKk6WpS5urFWAbKPrruNtde+Jt1XuZ6qzUHTvk3e3bzI3Z3EjNqp8xQRLmEZQdD2VChiO+3xj6RloGsAexABABABABAHA0qZ+syjPa2bjaAK7gtIDiNbOIubSUUke6MpDKG77AnyivTj/ACSkamJqv9lRprTrN9ueT+yIyXImV09ndrojsEX6KqCQDbmQNT+kWDLLjRUayVso4a24wBXcVxqnlSp0unBM2cXJUK4s76M75hpztz4bzHxJLQ9zqSnbed7Ky7kS2ywYU6q3DSPp4M86SZFsQzH6VMuX+pgbeQPrGPtC++l2HabBd8H3TfsigYi4abMYCwLsQOQJJtER1NGLjTinwSGVR7se46kWIfUY0TefA/lErM2Cu33P2L/0Gyia6a3AUzA+JmS7fkfSLOH+pmBtu3RR7/szR8GAatqDbdMPwAH6RcOYJjGp9OoT2jQK4mISGK501U3Ubxvsf0j44p6nuFSUL7rtdNeD1Kyar2ysV1UiWgyJcWJ1uzW4X09BH08F0aRqCNCLDxA4Ece7l63ArG0FOFxPD5tgCeuQtbVroMqk8d7EefOK9VWqwl3mvg5t4KvT4dV25Z5v2R3rqUNXEMoZHkre/MM48juiwZBNUdAkv3RaAHVoAIAWAEgBYAIAQwBBVry6FJ8693nTC4HFnKhVUDkAov5mPMYqN+0mq15VFGL0irL3+5w2HpiknXfHohLLADSow2U7ZmQZufE+MAOZaBRYCwgDMem+QAlNNUHPnZLjdYgGx77jTz8qWMimk2dL+na04yqQWjSfz5yMsqaacrZWIBsDz94Aj4ERRTidZT6ecbxkkhpPluB79/KJIuPIir0q6V5T9BrZtbEelokyKDVVXaZsPQLSKJFTUG+YzBL7gqKH077vr4CLeHikmzmtr1pSnGL5X8y07EXczJxFusZn8M7FrfGLBjlqnSVYFWAIO8GAONLQS5eqraAHUAMcRw9ZzSmJs0mYJq+NipB7iCY8ygpW7CajXlSUkv8AJWfzwIGdWLMxEBCCERUYjXtBmJF+7MPO8eiEtkAEAEAJACwAkAEAKRAFeqdk5LTOsXs928D7vId0ATlLThFCjhAHWACACAKl0m4cs6hmEmxkHrwfuA5h/SW87RXxUHOm7GrsXEqhio30lk/H+zEMRrw75rNqB9FtwFhw5ARlQg7HfUa9OELZ+TI6oqQRbX0MTRgyLEYqElZX8mNDNAvv9DElig6sYp39mbzsvSihwVT9OcnWaD6c8DJ5qpW/3TF+lHdijjMfW6WvJrRZLwLFshT5JAiQpk7ABACXgBnieGS56ZXHgRoR4Hl3QAywjZ6XIN14boAmoAIAIAIAIAS0AEALABABABABACQA3xCjWdKmSmGkxGQ+DAg/nHxq6se6c3CamuDv5HzhidSM2QsuaXeWxG4lSQSL8L3PnGGqco5H6fha9Lcvva55kXVTARvESwTPOKqwasmc6GQJ0yXJDAGbMSWCdQMzBbm3DWJoxbkZVevTjSk2/iPoPa4BEpaZBpmuPuylygf5l9I0jhW7u5ZaCXllqO6B8HEAJABaAFgAgAgAgAgAgAgAgAgBIAWACACAEgBYAIA+fdtaAU9RMkkAETZkwbtUmMWT4G3kYxq0JRqs/RdjVadXDxd+CTXatSq1KrwAj7BstYmMF9KRM9H2Empr6ZV/u5gnvqNElEH4kAfiixRTczB2rVhDDWvm/n5Nmx2bnrpSDXq0ue4ud3ooPmI0Dji2boAQG8AeoAIAIASAFgAgAgBIAWACACACAEgBYASAFgBCYAh6zauilEh6qVcbwGzkeIW5iJ1qa1ZepbMxlVXhSflb3Mj2+xSiqaibNlOszPLli5VlKshIIGcD6OXdGdiZ71ROGh1ex8LOjTUK6tZvW2lux8yiVEhOAHrHyMpGjiMPQWhbOivEqakq2nT5mRepMtbK7XZmU/RB3AH1ixSqKLvJmHtHA1K8FGhG+fYvc1yjx3DZswzUmy85IuzZ5ZJAsL5wOA+EWo1qctGYNbZWMpfXTfv7XLHKcOMwIIO4ggg+BESp3KDi4uzOsD4EAEAEAEAJACwAkALABABABABABACEQACAFgDGekbaec1VMkByspLqFGgJBsWb6x5X0GnGMyvUlKbV8kd3sLZ1CNGNWSvJq9+XdyKGzNMN7nLe1zvJ5AxDobil0r3Y5RXr8+dnKZIzuqDQak9wAJPwBj7F2VyDFqLlCnwPT0ykWsBHxSdyzPC05R3Ujpg1EW3jshgLkb9ToNLX046R7lmylQlGMJReb+fMsyRqavL2VF1sFD6dk2sBu7yM3fbgCfjkuB6pwlCS6V5N/E/t299h1gG0k6jmKZbkLmuyX7LjiGXdfdrvEfIzlTd4nvH7OoYuO7NZ2yfFfOWht+J4j1RkTfoTGEth3MpZW8Rl/wAxjXTurn5fKO62mS4MfT4EAEAEAJAABaAFgAgAgAgAgAgBIAWACAEgDMOk3YaZOZqunIJteYlwDpoWS+huN457r3inXoNveidLsvbEadJUKuVvpffwf5KBi4VZmRBZEAVRu0G8nvJufOKB2eBjainxfxEVImWnX/ldf6kI/WPduqQzW/iUvmVmSWHyEa+fcLeW8knUdnSx8RHyKXEsYico23Pn9nFq0NmVLgX8LrrYWvoBcjv0j1J5KxUwNG1Sbl85khglOHzqwurCxHjy74gm3wJNoNKGZYdkujWqaaGrAqylIJsysZgGoC5SbKeJNj3ctCOFblnoc3X/AFDGNH+N3qNWvoo/llz2irRPqJciXqslszkbs+4KPui9/vW4ReOQLjIFlA7hAHuACAEgBYAIASAFgBIAWACAEgBYAIAIAIA5TioU5rZbG991jvv3QBT8d6PKeoJmIzIzagggg+ukV54aEnc2sHt3E4aO4nePJkDhPRKozmfNJa3YtplN1JY236Zl8z3R5jhlazJ6u36rnGVNWt6nKV0WzcwzTFy31tvt3d+74xH+0d82aEv1U917sM/Qd4p0UoXVpEwqMqqwNjqoUFvFrFj3xJPCp6FDCfqGtRvvK7z9cyfwPYimox1juWI1LOQFB48hbxj1Tw0IO+rKmO21iMXlLJckcMXxt6l+ppnZZQ0aYuhc8lO8KOY3+G+wZBLYBs+skAkawBPQAsAJACwAQAQAQAloAWAPLX4QAogBYAIAIAIAIAIAh3wXIxanmNJJ+iNZf/xnQQBHVEjESw+dAAN7oqi/je/pAHudKxEaCaviEXN58PhAHmTSYgF0n3N79pUJ15G3wgBomzE2c+aomM55sdB4KNB5CALDhuDS5O4awBJQAQB4W/GAPcAEAEAEAEAEAYoemap+zSfWZ+8APq3pMxKSizJuHCWjbmdZyqeQudx7jADH5Zqn7NJ9X/eAD5Zar7NJ9Zn7wADpmqfs0n1f94AB0zVP2aT6v+8AHyy1X2aT6zP3gA+WWq+zSfWZ+8AHyy1P2aT6zP3gA+WWq+zSfWZ+8AHyy1P2aT6zP3gA+WWq+zSfWZ+8AHyy1X2aT6zP3gA+WWq+zSfWZ+8AHyy1X2aT6zP3gA+WWq+zSfWZ+8AHyy1P2aT6zP3gA+WWp+zSfWZ+8AHyy1X2aT6zP3gA+WWq+zSfWZ+8AHyy1X2aT6zP3gA+WWq+zSfWZ+8AHyy1X2aT6zP3gA+WWq+zSfWZ+8AUrZKrlSa2nmzx80k1WbS9uTW/lazfhgC541PmpRqZ87M01ZgmsatJyTh1bdX1cpWIvnyWIXTebQA2k4rhM0S5DySqq3YZhMRUSZNzMpPXE5woAZ72JuRa1mAYyK/CMwzyGI0z2SaoLZVu6XnnLK98dWQTcg3t2QA7n4phkwCYy6y8iZWSaZsxWac7sG64XawlKHa+TcQQwsBz/wDXMMaoaomU5ZmqGmuoRyGHXuyMuaaApK5GcMGDHMBaAGFbWYYZMwJJPWmWRLYJMUB+xvDTmvdhMYGwsrKLEi0AVWACACACACACAEgCTSppvpU7eUw8jpYjTW2vDkYA5iqk2UdRucsSXJumYkIfKwv3d8AdJdbIB1psw006xgToAdQO4/1HusB5nVcgqwWnysRo2cmxve+W3LSAOFHNlqT1kozBYWAcpa1r6gG9xcQA7l1dLc3pWIItbrmuDcm4NuVhbuPOAFSspdb0ra3/AL1tOXDw48TvgBPbKXjSnffScw8hpAHGZUSMpAkENawYzGNjbfa1jrrb/YAYwAQAgEALABABABABABABABABABABABABABABABABABABABABABAH/9k=',cat:'ผลิตภัณฑ์จากสัตว์', desc:'หางกุ้งล็อบสเตอร์หายาก ใช้ทำซุปและเมนูหรู เปิดใช้ที่เลเวล 44', qty:10},
+  {id:'duck_feather',name:'ขนเป็ด',price:30,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsuAft1Fv4eT-_FEjgadHqRir7U4KXQiqgdA&s',cat:'ผลิตภัณฑ์จากสัตว์', desc:'ขนเป็ดจากบ่อเป็ด ใช้ผลิตหมอนและเสื้อขนเป็ด เปิดใช้ที่เลเวล 50', qty:10},
+  
+  {id:'sugar_bag',name:'น้ำตาลทรายขาว',price:14,img:'https://itemhayday.com/img/product/RSl3Zi13%20White_Sugar.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'น้ำตาลทรายขาวบริสุทธิ์ ทำจากอ้อย ใช้ทำขนมและส่วนผสมทั่วไป เปิดใช้เลเวล 7', qty:1},
+  {id:'pie',name:'พายแอปเปิ้ล',price:12,img:'https://itemhayday.com/img/product/P7ilaU28%20Apple_Pie.png',cat:'อาหารปรุงสำเร็จ', desc:'พายแอปเปิ้ลรสชาติดี ทำจากแอปเปิ้ล ไข่ และน้ำตาล เปิดใช้เลเวล 18', qty:1},
+  {id:'donut',name:'โดนัท',price:15,img:'https://itemhayday.com/img/product/2zBbjhSprinkled%20Donut.png',cat:'อาหารปรุงสำเร็จ', desc:'โดนัทหอมหวาน ทำจากข้าวสาลี ไข่ และน้ำตาล เปิดใช้เลเวล 33', qty:1},
+  {id:'pizza',name:'พิซซ่า',price:15,img:'https://itemhayday.com/img/product/U5mhWw33%20Pizza.png',cat:'อาหารปรุงสำเร็จ', desc:'พิซซ่าอบร้อน ทำจากข้าวสาลี ชีส และมะเขือเทศ เปิดใช้เลเวล 37', qty:1},
+  {id:'dress',name:'ชุดเดรส',price:20,img:'https://itemhayday.com/img/product/SKkXaN25%20Violet_Dress.png',cat:'เครื่องแต่งกาย', desc:'ชุดเดรสสีแดงสวยงาม ทำจากผ้าฝ้ายในโรงทอผ้า (Loom) เปิดใช้เลเวล 57', qty:1},
+  {id:'hat',name:'หมวก',price:15,img:'https://itemhayday.com/img/product/1YkinV19%20Blue_Woolly_Hat.png',cat:'เครื่องแต่งกาย', desc:'หมวกปีกกว้าง ทำจากขนแกะในโรงทอผ้า เปิดใช้เลเวล 17', qty:1},
+  {id:'shovel',name:'พลั่ว',price:7,img:'https://itemhayday.com/img/product/hn3MebShovel.png',cat:'เครื่องมือและวัสดุ', desc:'พลั่วขุดเหมือง ใช้สำหรับขุดแร่ต่างๆ ในเหมืองแร่ (Mine) เปิดใช้เลเวล 24', qty:1},
+  {id:'mine_tool',name:'ระเบิด TNT',price:7,img:'https://itemhayday.com/img/product/a5NxCmTNT%20barrel.png',cat:'เครื่องมือและวัสดุ', desc:'ระเบิด TNT ใช้ทำลายหินขนาดใหญ่ในเหมืองแร่เพื่อเก็บแร่ เปิดใช้เลเวล 33', qty:1},
+  {id:'voucher_green',name:'บัตรกำนัลเขียว',price:50,img:'https://preview.redd.it/purple-vouchers-v0-a1a25nv2549f1.jpeg?width=640&crop=smart&auto=webp&s=3f8d9686811162fb0b5141c5658e3123289f1cb5',cat:'พิเศษ', desc:'บัตรกำนัลสีเขียว ใช้แลกซื้อสัตว์เลี้ยงหรือไอเท็มหายากอื่นๆ ในเกม', qty:1},
+  
+  // *** ของตกแต่งที่ถูกปรับรูปใหม่ให้ใช้งานได้ ***
+  {id:'bush_flower',name:'พุ่มดอกไม้',price:15,img:'https://st3.depositphotos.com/11953928/32599/v/450/depositphotos_325999184-stock-illustration-floral-tropical-cartoon.jpg',cat:'ของตกแต่ง', desc:'พุ่มดอกไม้สีสันสดใส ใช้ตกแต่งฟาร์มให้มีชีวิตชีวา', qty:1},
+  {id:'well',name:'บ่อน้ำบาดาล',price:40,img:'https://www.shutterstock.com/image-vector/stone-well-bucket-drinking-water-600w-385319503.jpg',cat:'ของตกแต่ง', desc:'บ่อน้ำบาดาลขนาดใหญ่ เป็นของตกแต่งที่ให้ความรู้สึกแบบฟาร์มดั้งเดิม', qty:1},
+  {id:'path',name:'ทางเดินหิน',price:5,img:'data:image/jpeg;base64,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',cat:'ของตกแต่ง', desc:'ทางเดินที่ทำจากหินก้อนเล็ก ๆ ใช้ปูทางเดินรอบฟาร์ม', qty:1},
+  {id:'dog_house',name:'บ้านสุนัข',price:35,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgU1AVEL7uJzMirXBgdvJPOprcZ5uzEMRx4m_hh8nrIl7KLy-PsnizXeSCvry_lhW50KK2mACTQKCbpvo4cMXo3pMWLiccK-w1asE-aBemqOMitFp2yXHZvTOwrmxExVLWoCt5_P1ZGXRA/s200/Dog-House.png',cat:'ของตกแต่ง', desc:'บ้านสำหรับสุนัขตัวโปรด สัตว์เลี้ยงจะคอยให้ XP เพิ่มเติม', qty:1},
+  {id:'cat_house',name:'บ้านแมว',price:35,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEirfMC8z-AGlf_dYJ01RFtnIYJP7aerJ8w5q3GH3oxUTKA-uNf4qnrMNAicreTAhNP_MX9bKQNz5hF4s4cJvKpavCimgM8W0VuJZECHtD2UmpNEZlzPhyphenhyphenTZzdHZZRfWtuRksS3M7IqdVr0/s200/Cat-House.png',cat:'ของตกแต่ง', desc:'บ้านสำหรับแมวสุดน่ารัก สัตว์เลี้ยงจะคอยให้ XP เพิ่มเติม', qty:1},
+  {id:'horse_stable',name:'คอกม้า',price:30,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqEUO86a3ktE2dcOcPh-U41jvdNVAUA9MThV4bbZO2yXIn2KZZ6P8ZyROXI7uTVp3CBob9yd8A9rNUCLptnfAo4VznGMYjutL73iUMjSbGEY8pGcS5WSqKea2x0BMaA9VFyRfUWwhFe7Q/s200/Horse-Stable.png',cat:'ของตกแต่ง', desc:'คอกม้าสำหรับม้าตัวเก่ง สัตว์เลี้ยงจะคอยให้ XP เพิ่มเติม', qty:1},
+  {id:'sheep_pen',name:'คอกแกะ',price:30,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi0dvYzYKnPbKRwCZ8NhZMOe4uWe8emlI9tb-aVNCQfVPJQoz0VsOzERpfgtfaV1Y9t0hPzDkJ01LyHDRQXOWoMCkLGeF5CaRnvWKYMfJ9gqHstRdmgRpZ7hhikzar2oswCa2EfgylJmS4/s200/Sheep-Pasture.png',cat:'ของตกแต่ง', desc:'โรงเลี้ยงแกะสำหรับเก็บขนแกะ มีประโยชน์ในการผลิตเสื้อผ้า', qty:1},
+  {id:'chicken_coop',name:'เล้าไก่',price:30,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgVBjHBT_LIUm5qipezAXAULRrDZAOnOom-cRSrvhGHNtOhl77_YU-_R99vxEteK2IaTkozq4rfkJ_Hg_qryYZffR_fBoTBzGOsI0EfhWX812JL3YIC9CxRWoE9FhHT06GcZhsCxOIdKZ0/s200/Chicken-Coop.png',cat:'ของตกแต่ง', desc:'โรงเลี้ยงไก่สำหรับเก็บไข่ไก่ ผลิตภัณฑ์พื้นฐานของเกม', qty:1},
+  {id:'cow_barn',name:'คอกวัว',price:30,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgxTd1ch8w9EaR7pzpBXDa-WqEv0BHc3tGfS-1rvV24CPy0nnjqe-6drNpJfIBvryU2uW57aiXAkZPjVOZfmzSW66BRAerCCNATlgWRKAW2iFlx0m3S_-cJqWDKVbaL7wkjKKHqcUUgVCk/s200/Cow-Pasture.png',cat:'ของตกแต่ง', desc:'คอกสำหรับวัว ใช้ผลิตนมและนำไปเป็นวัตถุดิบ เช่น นม ครีม เนย ชีส', qty:1},
+  {id:'pig_pen',name:'คอกหมู',price:30,img:'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjTmgdkIenprD7d1Rt1fSw3rWWlAaqms5i4Llu1FJ3RNHorW1xGdgRUVyvMWVshZYCm_T-FjUHS5vbZ1lgeMq83u1fDRZDoXmER10vIS6PlvUPxE1-DYfIfuh0wrewWKGU3J2-4AiKB3co/s200/Pig-Pen.png',cat:'ของตกแต่ง', desc:'คอกสำหรับหมู ใช้ผลิตเบคอน วัตถุดิบสำคัญในอาหารหลายชนิด', qty:1},
+  
+  // 🏭 ผลิตภัณฑ์แปรรูป (ต่อ)
+  {id:'metal_bar',name:'เหล็ก',price:30,img:'https://itemhayday.com/img/product/Kt9yfg34%20Iron_Bar.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'เหล็กแท่งหลอมจากแร่เหล็ก ใช้ในโรงหลอม (Smelter) เพื่อผลิตเครื่องประดับ เปิดใช้เลเวล 34', qty:1},
+  {id:'silver_bar',name:'เงิน',price:40,img:'https://itemhayday.com/img/product/IKBHto24%20Silver_Bar.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'เงินแท่งหลอมจากแร่เงิน ใช้ในโรงหลอมเพื่อผลิตเครื่องประดับที่มีมูลค่าสูงขึ้น เปิดใช้เลเวล 38', qty:1},
+  {id:'gold_bar',name:'ทอง',price:40,img:'https://itemhayday.com/img/product/S2V4FL25%20Gold_Bar.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ทองคำแท่งหลอมจากแร่ทอง ใช้ในโรงหลอมเพื่อผลิตเครื่องประดับที่หรูหรา เปิดใช้เลเวล 42', qty:1},
+  {id:'platinum_bar',name:'แพลตตินัม',price:40,img:'https://itemhayday.com/img/product/67DSfM25%20Platinum_Bar.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'แพลตตินัมแท่งหายาก หลอมจากแร่แพลตตินัม เปิดใช้เลเวล 48', qty:1},
+  
+  // 🛠️ เครื่องมือและวัสดุ (ต่อ)
+  {id:'coal',name:'ถ่านหิน',price:30,img:'https://img.freepik.com/premium-vector/coal-cartoon-icon-vector-illustration_1322206-73030.jpg',cat:'เครื่องมือและวัสดุ', desc:'ถ่านหินสำหรับใช้เป็นเชื้อเพลิงในการหลอมแร่ในโรงหลอม', qty:1},
+  {id:'iron',name:'แร่เหล็ก',price:30,img:'https://thumb.ac-illust.com/2e/2ee82efcc72509c41cef74619c07bd16_t.jpeg',cat:'เครื่องมือและวัสดุ', desc:'แร่เหล็กจากเหมือง ใช้สำหรับหลอมเป็นแท่งเหล็ก', qty:1},
+  {id:'silver',name:'แร่เงิน',price:40,img:'https://quizizz.com/media/resource/gs/quizizz-media/quizzes/28166df8-a159-492a-8cf4-e5590b9a87d0?w=200&h=200',cat:'เครื่องมือและวัสดุ', desc:'แร่เงินจากเหมือง ใช้สำหรับหลอมเป็นแท่งเงิน', qty:1},
+  {id:'gold',name:'แร่ทอง',price:40,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTS2xUriODA6BOkDH5gKiwlosvfw9JWqLtV2g&s',cat:'เครื่องมือและวัสดุ', desc:'แร่ทองจากเหมือง ใช้สำหรับหลอมเป็นแท่งทอง', qty:1},
+  {id:'platinum',name:'แร่แพลตตินัม',price:40,img:'https://cdn.shopify.com/s/files/1/1348/2231/files/Screen_Shot_2566-04-05_at_4.31.07_PM_480x480.png?v=1680687121',cat:'เครื่องมือและวัสดุ', desc:'แร่แพลตตินัมหายากจากเหมือง ใช้สำหรับหลอมเป็นแท่งแพลตตินัม', qty:1},
+  
+  // 🍞 อาหารปรุงสำเร็จ (ต่อ)
+  {id:'bqe_sandwich',name:'แซนด์วิชเบคอน',price:15,img:'https://png.pngtree.com/png-clipart/20240428/original/pngtree-cartoon-egg-sandwich-with-bacon-lettuce-tomato-png-image_14958640.png',cat:'อาหารปรุงสำเร็จ', desc:'แซนด์วิชเบคอนเลิศรส ทำจากขนมปัง เบคอน และมะเขือเทศ เปิดใช้เลเวล 34', qty:1},
+  {id:'fish_n_chips',name:'ฟิชแอนด์ชิป',price:15,img:'https://t4.ftcdn.net/jpg/06/74/36/37/360_F_674363721_YEflGjwPJwCUpRYQkokux9nlKtzGL2jg.jpg',cat:'อาหารปรุงสำเร็จ', desc:'เมนูยอดนิยม ทำจากเนื้อปลาและมันฝรั่งในเครื่องทอด เปิดใช้เลเวล 41', qty:1},
+  {id:'chocolate_cake',name:'เค้กช็อกโกแลต',price:15,img:'https://itemhayday.com/img/product/GN9VaF36%20Chocolate_Cake.png',cat:'อาหารปรุงสำเร็จ', desc:'เค้กช็อกโกแลตเข้มข้น ใช้โกโก้และน้ำตาล เปิดใช้เลเวล 19', qty:1},
+  {id:'red_berry_cake',name:'เค้กเบอร์รี่แดง',price:15,img:'https://itemhayday.com/img/product/Vo2Mmz23%20Red_Berry_Cake.png',cat:'อาหารปรุงสำเร็จ', desc:'เค้กเบอร์รี่แดงแสนอร่อย ทำจากสตรอว์เบอร์รี่และไข่ เปิดใช้เลเวล 23', qty:1},
+  
+  // 🏭 ผลิตภัณฑ์แปรรูป (ต่อ)
+  {id:'popcorn_spicy',name:'ป๊อปคอร์นรสเผ็ด',price:8,img:'https://itemhayday.com/img/product/32VQkF25%20Chili_Popcorn.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ป๊อปคอร์นปรุงรสเผ็ดร้อน ใช้พริกและข้าวโพด เปิดใช้เลเวล 11', qty:1},
+  {id:'popcorn_butter',name:'ป๊อปคอร์นเนย',price:8,img:'https://itemhayday.com/img/product/vXDca616%20Buttered_Popcorn.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ป๊อปคอร์นคลุกเนย ทำจากข้าวโพดและเนย เปิดใช้เลเวล 16', qty:1},
+  {id:'carrot_juice',name:'น้ำแครอท',price:13,img:'https://itemhayday.com/img/product/NnXScq26%20Carrot_Juice.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'น้ำแครอทสดคั้นจากแครอท ใช้ในเครื่องทำน้ำผลไม้ เปิดใช้เลเวล 26', qty:1},
+  {id:'apple_juice',name:'น้ำแอปเปิ้ล',price:15,img:'https://itemhayday.com/img/product/wntUFy25%20Apple_Juice.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'น้ำแอปเปิ้ลคั้นสด ใช้ในเครื่องทำน้ำผลไม้ เปิดใช้เลเวล 28', qty:1},
+  {id:'cherry_juice',name:'น้ำเชอร์รี่',price:15,img:'https://itemhayday.com/img/product/Dl5FeK30%20Cherry_Juice.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'น้ำเชอร์รี่คั้นจากผลเชอร์รี่ ใช้ในเครื่องทำน้ำผลไม้ เปิดใช้เลเวล 33', qty:1},
+  {id:'milk_tea',name:'ชานม',price:15,img:'https://itemhayday.com/img/product/0lDhKrMilk_Tea.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ชานมร้อนๆ ทำจากนมและน้ำตาลในโรงกาแฟ เปิดใช้เลเวล 45', qty:1},
+  {id:'coffee',name:'กาแฟเอสเพรสโซ่',price:20,img:'https://itemhayday.com/img/product/Un5ct2image.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'กาแฟเอสเพรสโซ่เข้มข้น ใช้เมล็ดกาแฟในโรงกาแฟ เปิดใช้เลเวล 42', qty:1},
+  {id:'latte',name:'ลาเต้',price:20,img:'https://itemhayday.com/img/product/BbLk7GCaffe_Latte.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ลาเต้หอมมัน ทำจากเมล็ดกาแฟและนมวัวในโรงกาแฟ เปิดใช้เลเวล 43', qty:1},
+  {id:'cappuccino',name:'คาปูชิโน่',price:20,img:'https://itemhayday.com/img/product/uH1czdIced_Banana_Latte.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'คาปูชิโน่ฟองนุ่ม ทำจากเมล็ดกาแฟและนมวัวในโรงกาแฟ เปิดใช้เลเวล 47', qty:1},
+  {id:'mocha',name:'มอคค่า',price:20,img:'https://itemhayday.com/img/product/Xw9gT0Caffe_Mocha.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'มอคค่ารสช็อกโกแลต ทำจากเมล็ดกาแฟและโกโก้ในโรงกาแฟ เปิดใช้เลเวล 50', qty:1},
+  
+  // 🌾 พืชผล (ต่อ)
+  {id:'strawberry',name:'สตรอว์เบอร์รี่',price:15,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNNQC0eMtNMxe-o2LdqUenoFB-yWR7l7Ajeg&s',cat:'พืชผล', desc:'สตรอว์เบอร์รี่ผลสด ใช้ทำไอศกรีมและเค้ก ปลูกได้ที่เลเวล 34', qty:10},
+  {id:'tomato',name:'มะเขือเทศ',price:12,img:'data:image/jpeg;base64,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',cat:'พืชผล', desc:'มะเขือเทศผลใหญ่ ใช้ทำซุปมะเขือเทศและพิซซ่า ปลูกได้ที่เลเวล 37', qty:10},
+  
+  // 🍞 อาหารปรุงสำเร็จ (ต่อ)
+  {id:'salad',name:'สลัดผัก',price:25,img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDOVH_OwEGUakvU9tDXAqh3cNKxiCgaoeuew&s',cat:'อาหารปรุงสำเร็จ', desc:'สลัดเฟต้าเพื่อสุขภาพ ทำจากผักกาดหอมและมะเขือเทศ เปิดใช้เลเวล 58', qty:1},
+  {id:'soup',name:'ซุปมะเขือเทศ',price:15,img:'https://img.pikbest.com/origin/10/06/43/33DpIkbEsTkSb.png!sw800',cat:'อาหารปรุงสำเร็จ', desc:'ซุปมะเขือเทศร้อนๆ ทำจากมะเขือเทศและนมในเครื่องทำซุป เปิดใช้เลเวล 39', qty:1},
+  
+  // 🛠️ เครื่องมือและวัสดุ (ต่อ)
+  {id:'fishing_net',name:'ตาข่ายจับปลา',price:17,img:'https://png.pngtree.com/png-clipart/20241106/original/pngtree-fishing-net-transparent-background-black-big-net-png-image_16685399.png',cat:'เครื่องมือและวัสดุ', desc:'ตาข่ายจับปลาที่ผลิตเอง ใช้สำหรับจับปลาจำนวนมากในบ่อปลา', qty:1},
+  {id:'lure_bait',name:'เหยื่อตกปลา',price:4,img:'https://png.pngtree.com/png-vector/20240314/ourmid/pngtree-earthworm-pink-worm-and-underground-insect-fishing-bait-flat-cartoon-png-image_11949252.png',cat:'เครื่องมือและวัสดุ', desc:'เหยื่อสีแดงสำหรับตกปลาโดยเฉพาะ ใช้ตกปลาในทะเลสาบ', qty:1},
+  {id:'dynamite',name:'ระเบิดไดนาไมต์',price:7,img:'https://itemhayday.com/img/product/sg0qwxDynamite.png',cat:'เครื่องมือและวัสดุ', desc:'ไดนาไมต์ ใช้ทำลายก้อนหินและหินแร่ในเหมืองแร่ (Mine) เปิดใช้เลเวล 24', qty:1},
+  {id:'pickaxe',name:'อีเก้อ',price:25,img:'https://itemhayday.com/img/product/GwK2J1Pickaxe.png',cat:'เครื่องมือและวัสดุ', desc:'อีเก้อขุดเหมือง ใช้สำหรับขุดแร่จากก้อนหินเล็กๆ ในเหมืองแร่ เปิดใช้เลเวล 24', qty:1},
+  
+  // 💎 ไอเท็มพิเศษ (ต่อ)
+  {id:'map',name:'แผนที่',price:50,img:'https://i.pinimg.com/736x/6c/43/19/6c4319705f225989d751c6a99a10698c.jpg',cat:'พิเศษ', desc:'แผนที่ขยายเมือง (Town) ใช้สำหรับเปิดพื้นที่ใหม่ๆ ของเมือง', qty:1},
+  {id:'land_deed',name:'โฉนดที่ดิน',price:50,img:'https://itemhayday.com/img/product/a2C1F9vvv.png',cat:'พิเศษ', desc:'โฉนดที่ดิน ใช้สำหรับขยายพื้นที่ฟาร์มของคุณ', qty:1},
+  {id:'mallet',name:'ค้อนไม้',price:50,img:'https://itemhayday.com/img/product/9T0RkbMallet.png',cat:'พิเศษ', desc:'ค้อนไม้ ใช้สำหรับขยายพื้นที่ฟาร์มและพื้นที่เมือง', qty:1},
+  
+  // 🍞 อาหารปรุงสำเร็จ (ต่อ)
+  {id:'cheese_burger',name:'ชีสเบอร์เกอร์',price:20,img:'https://www.shutterstock.com/image-vector/burger-vector-isolated-cartoon-clip-600nw-2498444355.jpg',cat:'อาหารปรุงสำเร็จ', desc:'เบอร์เกอร์ใส่ชีส ทำจากขนมปัง ชีส และเนื้อในเครื่องทำเบอร์เกอร์ เปิดใช้เลเวล 38', qty:1}, 
+  {id:'hotdog',name:'ฮอทด็อก',price:15,img:'https://itemhayday.com/img/product/AckNBOHot_Dog.png',cat:'อาหารปรุงสำเร็จ', desc:'ฮอทด็อกร้อนๆ ทำจากไส้กรอกและขนมปัง เปิดใช้เลเวล 45', qty:1},
+  
+  // 🏭 ผลิตภัณฑ์แปรรูป (ต่อ)
+  {id:'smoothie',name:'สมูทตี้',price:20,img:'https://itemhayday.com/img/product/bs4VKhBerry_Smoothie.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'สมูทตี้ผลไม้สดชื่น ทำจากผลไม้และน้ำตาลในเครื่องทำสมูทตี้ เปิดใช้เลเวล 64', qty:1},
+  {id:'ice_cream',name:'ไอศกรีม',price:20,img:'https://itemhayday.com/img/product/y9QcC4Vanilla_Ice_Cream.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'ไอศกรีมวานิลลา ทำจากครีมและนมวัวในเครื่องทำไอศกรีม เปิดใช้เลเวล 39', qty:1},
+  {id:'yogurt',name:'โยเกิร์ต',price:20,img:'https://itemhayday.com/img/product/geEdvBYogurt_Smoothie.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'โยเกิร์ตรสธรรมชาติ ทำจากนมแพะในโรงทำผลิตภัณฑ์นม เปิดใช้เลเวล 35', qty:1},
+  
+  // 🥩 ผลิตภัณฑ์จากสัตว์ (ต่อ)
+  {id:'honey',name:'น้ำผึ้ง',price:20,img:'https://itemhayday.com/img/product/OmMDlnHoney.png',cat:'ผลิตภัณฑ์จากสัตว์', desc:'น้ำผึ้งหวานจากรังผึ้ง ใช้ทำน้ำเชื่อมและขนมหวาน เปิดใช้ที่เลเวล 39', qty:1},
+  {id:'beeswax',name:'ขี้ผึ้ง',price:15,img:'https://png.pngtree.com/png-vector/20221020/ourmid/pngtree-honeycomb-cartoon-honey-beeswax-propolis-png-image_6332810.png',cat:'ผลิตภัณฑ์จากสัตว์', desc:'ขี้ผึ้งจากรังผึ้ง ใช้ผลิตเทียนไขและเครื่องสำอาง เปิดใช้ที่เลเวล 41', qty:1},
+  
+  // 🏭 ผลิตภัณฑ์แปรรูป (ต่อ)
+  {id:'candle',name:'เทียนไข',price:20,img:'https://png.pngtree.com/png-vector/20230808/ourmid/pngtree-melted-candle-clipart-cartoon-candle-with-wax-dripping-on-white-wall-vector-png-image_6865145.png',cat:'ผลิตภัณฑ์แปรรูป', desc:'เทียนไขสตรอว์เบอร์รี่ ทำจากขี้ผึ้งและสตรอว์เบอร์รี่ เปิดใช้เลเวล 52', qty:1},
+  {id:'perfume',name:'น้ำหอม',price:30,img:'https://img.freepik.com/premium-vector/perfumecologne-cartoon-isolated-transparent-background-illustrations-png_976375-16292.jpg',cat:'ผลิตภัณฑ์แปรรูป', desc:'น้ำหอมกลิ่นดอกไม้ ทำจากดอกไม้ในเครื่องผลิตน้ำหอม เปิดใช้เลเวล 68', qty:1},
+  {id:'soap',name:'สบู่',price:25,img:'https://png.pngtree.com/png-vector/20250826/ourmid/pngtree-soap-clipart-hd-png-image_17308589.webp',cat:'ผลิตภัณฑ์แปรรูป', desc:'สบู่ออร์แกนิก ทำจากมะกอกในเครื่องผลิตสบู่ เปิดใช้เลเวล 49', qty:1},
+];
+// ---------------------- ระบบเสริมข้อมูลสินค้า (Augmenter) ----------------------
+const PRODUCTS_AUGMENTED = PRODUCTS.map((p, index) => {
+  // Mock Stock Logic (999 for items, 1-10 for tools/materials)
+  let stock = 999;
+  if (p.cat === 'เครื่องมือและวัสดุ' || p.cat === 'พิเศษ') {
+    stock = (index % 10) + 1; // 1 to 10 stock
+  } else if (p.cat === 'ของตกแต่ง') {
+    stock = (index % 5) + 5; // 5 to 9 stock
+  }
+
+  // Mock Sale Logic
+  let isSale = index % 7 === 0;
+  let discount = isSale ? 0.2 : 0; // 20% sale
+  let finalPrice = isSale ? p.price * (1 - discount) : p.price;
+
+  return {
+    ...p,
+    stock: stock,
+    isSale: isSale,
+    discount: discount,
+    finalPrice: Math.round(finalPrice)
+  };
+});
+
+// ---------------------- ระบบนำทาง (Navigation) ----------------------
+const allPages = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('nav a');
+const $rightColumn = document.getElementById("rightColumn");
+
+function activatePage(pageId) {
+    allPages.forEach(page => page.classList.remove('active'));
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+        document.querySelector(`nav a[data-page="${pageId}"]`).classList.add('active');
+    } else {
+        document.getElementById('home').classList.add('active');
+        document.querySelector('nav a[data-page="home"]').classList.add('active');
+        pageId = 'home';
+    }
+
+    document.body.classList.toggle('shop-active', pageId === 'shop');
+    history.pushState(null, '', `#${pageId}`);
+    
+    $rightColumn.innerHTML = '';
+    $rightColumn.style.display = 'block';
+
+    if (pageId === 'shop') {
+        renderCartPanel();
+    } else if (pageId === 'checkout') {
+        $rightColumn.style.display = 'none';
+        renderCheckoutSummary();
+        loadShippingInfo();
+        handlePaymentMethodChange(); 
+    } else {
+        $rightColumn.style.display = 'none';
+    }
+
+    if (pageId === 'shop' && document.getElementById('productGrid').innerHTML === '') {
+        renderProductGrid();
+        renderCategories();
+        filterProducts('all'); 
+    }
+}
+
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const pageId = e.currentTarget.getAttribute('data-page');
+        activatePage(pageId);
+    });
+});
+
+// ---------------------- ระบบตัวช่วยทั่วไป ----------------------
+function fmt(num) {
+    return '฿' + num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// ---------------------- ระบบตะกร้าสินค้า (Cart System) ----------------------
+let cart = loadCart();
+
+function loadCart() {
+    try {
+        const savedCart = JSON.parse(localStorage.getItem('hay_cart') || '{}');
+        const validatedCart = {};
+        for (const id in savedCart) {
+            if (PRODUCTS_AUGMENTED.find(p => p.id === id)) {
+                validatedCart[id] = savedCart[id];
+            }
+        }
+        return validatedCart;
+    } catch (e) {
+        return {};
+    }
+}
+
+function saveCart() {
+    localStorage.setItem('hay_cart', JSON.stringify(cart));
+}
+
+function addToCart(id) {
+    const product = PRODUCTS_AUGMENTED.find(p => p.id === id);
+    if (!product || product.stock <= 0) return alert('สินค้าหมดสต็อก!');
+
+    const currentQty = cart[id] || 0;
+    const maxQty = product.stock === 999 ? 999 : product.stock;
+
+    if (currentQty < maxQty) {
+        cart[id] = currentQty + 1;
+        saveCart();
+        renderCart();
+        document.getElementById("productModal").classList.remove('show'); 
+    } else {
+        alert(`เพิ่มสินค้าได้สูงสุด ${maxQty} ชิ้นเท่านั้น!`);
+    }
+}
+
+function removeFromCart(id) {
+    if (cart[id]) {
+        cart[id] -= 1;
+        if (cart[id] <= 0) {
+            delete cart[id];
+        }
+    }
+    saveCart();
+    renderCart();
+}
+
+function clearCart() {
+    cart = {};
+    saveCart();
+    renderCart();
+    if (document.getElementById('checkout').classList.contains('active')) {
+        renderCheckoutSummary();
+    }
+}
+
+function renderCart() {
+    const $list = document.getElementById("cartList");
+    const $total = document.getElementById("cartTotal");
+    const $count = document.getElementById("cartCount");
+    const $checkoutBtn = document.getElementById("checkoutBtn");
+    
+    if (!$list || !$total || !$count || !$checkoutBtn) return; 
+
+    let listHTML = '';
+    let total = 0;
+    let itemCount = 0;
+
+    for (const id in cart) {
+        const qty = cart[id];
+        const product = PRODUCTS_AUGMENTED.find(p => p.id === id);
+        if (product && qty > 0) {
+            const subtotal = product.finalPrice * qty;
+            total += subtotal;
+            itemCount += qty;
+
+            listHTML += `
+                <div class="cart-item">
+                    <img src="${product.img}" alt="${product.name}">
+                    <div style="flex-grow: 1;">
+                        <div style="font-weight:700">${product.name} (x${product.qty})</div>
+                        <div class="qty">
+                            <button onclick="removeFromCart('${product.id}')">-</button>
+                            <span style="font-weight:700">${qty}</span>
+                            <button onclick="addToCart('${product.id}')">+</button>
+                        </div>
+                    </div>
+                    <div style="font-weight:800">${fmt(subtotal)}</div>
+                </div>
+            `;
+        }
+    }
+
+    $list.innerHTML = listHTML || '<p style="text-align:center; color:var(--muted); padding:10px;">ตะกร้าสินค้าว่างเปล่า</p>';
+    $total.textContent = fmt(total);
+    $count.textContent = `${itemCount} รายการ`;
+    $checkoutBtn.disabled = itemCount === 0;
+}
+
+function renderCartPanel() {
+    const $rightColumn = document.getElementById("rightColumn");
+    const cartHTML = `
+        <div class="cart">
+            <div class="cart-title">
+                <div>🧺 ตะกร้าสินค้า</div>
+                <div id="cartCount">0 รายการ</div>
+            </div>
+            <div class="cart-list" id="cartList">
+            </div>
+            <div class="checkout">
+                <div style="font-weight:700">ยอดรวม:</div>
+                <div id="cartTotal">฿0</div>
+            </div>
+            <button class="btn" style="width:100%;margin-top:10px" onclick="activatePage('checkout')" id="checkoutBtn" disabled>ดำเนินการชำระเงิน</button>
+            <button class="btn secondary" style="width:100%;margin-top:8px" onclick="clearCart()">ล้างตะกร้า</button>
+        </div>
+    `;
+    $rightColumn.innerHTML = cartHTML;
+    renderCart(); 
+}
+
+// ---------------------- ระบบสมาชิกจำลอง (Mock User System) ----------------------
+const MOCK_ACCOUNTS = {
+    'farmer': { name: 'Farmer John', initial: 'FJ', address: 'บ้านเลขที่ 123 ฟาร์ม Hay Day Town', phone: '098-765-4321', password: '1234' },
+    'haydayfan': { name: 'Hay Day Fan', initial: 'HF', address: 'ถนนขนมปัง, ซอยเค้ก, ไร่นา', phone: '081-234-5678', password: '5678' }
+};
+
+let registeredUsers = loadRegisteredUsers();
+let currentUser = loadUser();
+const $headerUserInfo = document.getElementById("headerUserInfo");
+const $loginModal = document.getElementById("loginModal");
+const $loginForm = document.getElementById("loginForm");
+const $loginUsername = document.getElementById("loginUsername");
+const $loginPassword = document.getElementById("loginPassword");
+const $loginMessage = document.getElementById("loginMessage");
+const $registerModal = document.getElementById("registerModal");
+const $registerForm = document.getElementById("registerForm");
+const $registerName = document.getElementById("registerName");
+const $registerUsername = document.getElementById("registerUsername");
+const $registerPassword = document.getElementById("registerPassword");
+const $registerMessage = document.getElementById("registerMessage");
+
+function loadRegisteredUsers() {
+    try { return JSON.parse(localStorage.getItem('hay_registered_users')) || {}; } catch (e) { return {}; }
+}
+function saveRegisteredUsers(users) { localStorage.setItem('hay_registered_users', JSON.stringify(users)); }
+function loadUser() {
+    try { const user = JSON.parse(localStorage.getItem('hay_user')); return user && user.isLoggedIn ? user : null; } catch (e) { return null; }
+}
+function saveUser(user) { localStorage.setItem('hay_user', JSON.stringify(user)); currentUser = user; }
+
+function showLoginModal() {
+    $registerModal.classList.remove('show');
+    $loginForm.reset();
+    $loginMessage.textContent = '';
+    $loginModal.classList.add('show');
+}
+
+function processLogin(event) {
+    event.preventDefault();
+    const username = $loginUsername.value.toLowerCase().trim();
+    const password = $loginPassword.value;
+    $loginMessage.textContent = '';
+
+    const allAccounts = { ...MOCK_ACCOUNTS, ...registeredUsers };
+    const account = allAccounts[username];
+
+    if (account && account.password === password) {
+        const userDetails = { name: account.name, initial: account.initial, address: account.address, phone: account.phone, isLoggedIn: true };
+        saveUser(userDetails);
+        renderUserBadge();
+        $loginModal.classList.remove('show');
+        alert(`ยินดีต้อนรับกลับ ${account.name} เข้าสู่ระบบสำเร็จ!`);
+        activatePage(location.hash.substring(1) || 'home');
+    } else {
+        $loginMessage.textContent = '❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง';
+        $loginPassword.value = '';
+    }
+}
+
+function showRegisterModal() {
+    $loginModal.classList.remove('show'); 
+    $registerForm.reset();
+    $registerMessage.textContent = '';
+    $registerModal.classList.add('show');
+}
+
+function processRegistration(event) {
+    event.preventDefault();
+    const newName = $registerName.value.trim();
+    const newUsername = $registerUsername.value.toLowerCase().trim();
+    const newPassword = $registerPassword.value;
+    $registerMessage.textContent = '';
+
+    if (!newName || !newUsername || newPassword.length < 4) {
+        return $registerMessage.textContent = 'กรุณากรอกข้อมูลให้ครบถ้วนและรหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร';
+    }
+    const allAccounts = { ...MOCK_ACCOUNTS, ...registeredUsers };
+    if (allAccounts[newUsername]) {
+        return $registerMessage.textContent = '❌ ชื่อผู้ใช้นี้ถูกใช้ไปแล้ว กรุณาเลือกชื่ออื่น';
+    }
+    const newUser = { name: newName, initial: newName.substring(0, 2).toUpperCase(), address: '', phone: '', password: newPassword };
+    registeredUsers[newUsername] = newUser;
+    saveRegisteredUsers(registeredUsers);
+
+    const userDetails = { ...newUser, isLoggedIn: true };
+    saveUser(userDetails);
+    renderUserBadge();
+    $registerModal.classList.remove('show');
+    alert(`🎉 สมัครสมาชิกสำเร็จ! ยินดีต้อนรับคุณ ${newName} เข้าสู่ระบบ!`);
+    activatePage(location.hash.substring(1) || 'home');
+}
+
+function logout() {
+    localStorage.removeItem('hay_user');
+    currentUser = null;
+    renderUserBadge();
+    clearCart();
+    alert('ออกจากระบบแล้ว');
+    activatePage('home');
+}
+
+function renderUserBadge() {
+    if (currentUser) {
+        $headerUserInfo.innerHTML = `
+            <div class="user-badge">
+                <div class="user-avatar">${currentUser.initial}</div>
+                <div class="user-name">${currentUser.name}</div>
+            </div>
+            <button class="user-login-btn" onclick="logout()">ออกจากระบบ</button>
+        `;
+    } else {
+        $headerUserInfo.innerHTML = `<button class="user-login-btn" onclick="showLoginModal()">เข้าสู่ระบบ / สมัครสมาชิก</button>`;
+    }
+}
+
+// ---------------------- ระบบแสดงผลสินค้า (Product Grid) ----------------------
+function renderCategories() {
+    const categories = ['all', ...new Set(PRODUCTS.map(p => p.cat))];
+    const $categories = document.getElementById("categories");
+
+    let catHTML = categories.map(cat => {
+        const catName = cat === 'all' ? 'สินค้าทั้งหมด' : cat;
+        return `<button class="cat-btn" data-cat="${cat}" onclick="filterProducts('${cat}')">${catName}</button>`;
+    }).join('');
+    $categories.innerHTML = catHTML;
+}
+
+function filterProducts(category) {
+    const filteredProducts = category === 'all' ? PRODUCTS_AUGMENTED : PRODUCTS_AUGMENTED.filter(p => p.cat === category);
+    const $grid = document.getElementById("productGrid");
+    if (!$grid) return;
+
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.getAttribute('data-cat') === category) btn.classList.add('active');
+    });
+
+    if (filteredProducts.length === 0) {
+        $grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px;">ไม่พบสินค้าในหมวดหมู่นี้</p>';
+        return;
+    }
+
+    let productHTML = '';
+    filteredProducts.forEach(p => {
+        const isOutOfStock = p.stock === 0;
+        const isSale = p.isSale;
+        let priceDisplay;
+
+        if (isSale) {
+            priceDisplay = `<span class="original-price">${fmt(p.price)}</span><span class="price sale-price">${fmt(p.finalPrice)}</span>`;
+        } else {
+            priceDisplay = `<span class="price">${fmt(p.finalPrice)}</span>`;
+        }
+
+        const stockText = p.stock === 999 ? 'ในสต็อก' : `คงเหลือ: ${p.stock} ชุด`;
+        let stockInfoHTML = p.stock > 0 ? (p.stock <= 5 ? `<div class="stock-info low-stock">⚠️ เหลือไม่มาก</div>` : `<div class="stock-info">${stockText}</div>`) : `<div class="stock-info low-stock">❌ หมดสต็อก</div>`;
+        const buttonText = isOutOfStock ? '❌ หมดสต็อก' : 'ดูรายละเอียด';
+
+        productHTML += `
+            <div class="card" data-product-id="${p.id}" onclick="showProductModal('${p.id}')">
+                ${isSale ? '<div class="sale-badge">-'+(p.discount*100)+'%</div>' : ''}
+                <div class="card-img-wrap">
+                    <img src="${p.img}" alt="${p.name}">
+                    <div class="qty-badge">x${p.qty}</div>
+                </div>
+                <div style="font-weight:700; margin-top:8px;">${p.name}</div>
+                <div class="price-wrap">${p.stock > 0 ? priceDisplay : '<span class="low-stock">หมดสต็อก</span>'}</div>
+                ${stockInfoHTML}
+                <button class="btn" onclick="event.stopPropagation(); showProductModal('${p.id}')" ${isOutOfStock ? 'disabled' : ''}>${buttonText}</button>
+            </div>
+        `;
+    });
+    $grid.innerHTML = productHTML;
+}
+
+function renderProductGrid() {} // Container setup
+
+// ---------------------- ระบบ Modal แสดงรายละเอียดสินค้า ----------------------
+const $productModal = document.getElementById("productModal");
+const $modalProductImg = document.getElementById("modalProductImg");
+const $modalProductName = document.getElementById("modalProductName");
+const $modalProductCat = document.getElementById("modalProductCat");
+const $modalProductDesc = document.getElementById("modalProductDesc");
+const $modalProductPrice = document.getElementById("modalProductPrice");
+const $modalProductStock = document.getElementById("modalProductStock");
+const $modalProductQty = document.getElementById("modalProductQty"); // New Qty Element
+const $modalAddToCartBtn = document.getElementById("modalAddToCartBtn");
+const $closeProductModalBtn = document.getElementById("closeProductModalBtn");
+
+$closeProductModalBtn.onclick = () => $productModal.classList.remove('show');
+$productModal.onclick = function(event) { if (event.target === $productModal) $productModal.classList.remove('show'); };
+
+function showProductModal(id) {
+    const product = PRODUCTS_AUGMENTED.find(p => p.id === id);
+    if (!product) return;
+
+    $modalProductImg.src = product.img;
+    $modalProductName.textContent = product.name;
+    $modalProductCat.textContent = `หมวดหมู่: ${product.cat}`;
+    $modalProductDesc.textContent = product.desc;
+    
+    // Update Qty in Modal
+    if ($modalProductQty) {
+        $modalProductQty.textContent = `x${product.qty} ชิ้น`;
+    }
+
+    let priceHTML = product.isSale ? `<span class="original-price">${fmt(product.price)}</span><span class="sale-price">${fmt(product.finalPrice)}</span>` : `<span>${fmt(product.finalPrice)}</span>`;
+    $modalProductPrice.innerHTML = priceHTML;
+
+    const isOutOfStock = product.stock === 0;
+    const stockText = product.stock === 999 ? 'มีสินค้าพร้อมส่ง' : `คงเหลือ: ${product.stock} ชุด`;
+    $modalProductStock.textContent = isOutOfStock ? '❌ หมดสต็อก' : stockText;
+    $modalProductStock.classList.toggle('low-stock', product.stock > 0 && product.stock <= 5);
+
+    $modalAddToCartBtn.onclick = () => addToCart(id);
+    $modalAddToCartBtn.disabled = isOutOfStock;
+    $modalAddToCartBtn.textContent = isOutOfStock ? '❌ หมดสต็อก' : '🧺 เพิ่มลงตะกร้า';
+
+    $productModal.classList.add('show');
+}
+
+// ---------------------- ระบบชำระเงิน (Checkout System) ----------------------
+const $orderLines = document.getElementById("orderLines");
+const $orderTotal = document.getElementById("orderTotal");
+const $shipName = document.getElementById("shipName");
+const $shipAddr = document.getElementById("shipAddr");
+const $shipPhone = document.getElementById("shipPhone");
+const $backToShop = document.getElementById("backToShop");
+const $paymentMethods = document.querySelectorAll('input[name="payment"]');
+const $orderSummaryPanel = document.getElementById("orderSummary");
+const $memberPanel = document.querySelector('.member-panel');
+const $receiptPanel = document.getElementById("receiptPanel");
+const $transferPaymentForm = document.getElementById("transferPaymentForm");
+const $cardPaymentForm = document.getElementById("cardPaymentForm");
+
+// New/Updated Elements for Payment
+const $confirmPayTransferBtn = document.getElementById("confirmPayTransferBtn");
+const $confirmPayCardBtn = document.getElementById("confirmPayCardBtn");
+const $slipUpload = document.getElementById("slipUpload");
+const $paymentAmountDisplay = document.getElementById("paymentAmountDisplay");
+const $paymentPanel = document.getElementById("paymentPanel");
+const $cardNumber = document.getElementById("cardNumber");
+const $cardExpiry = document.getElementById("cardExpiry");
+const $cardCVC = document.getElementById("cardCVC");
+
+$backToShop.onclick = () => activatePage('shop');
+
+function handlePaymentMethodChange() {
+    const selectedMethod = document.querySelector('input[name="payment"]:checked')?.value;
+    const totalAmount = parseFloat($orderTotal.textContent.replace('฿', '').replace(/,/g, ''));
+    
+    // 1. สลับการแสดงผลฟอร์ม
+    $transferPaymentForm.style.display = selectedMethod === 'transfer' ? 'block' : 'none';
+    $cardPaymentForm.style.display = selectedMethod === 'card' ? 'block' : 'none';
+
+    // 2. ปรับข้อความปุ่มบัตร
+    if (selectedMethod === 'card') {
+        $confirmPayCardBtn.textContent = `ชำระเงินด้วยบัตร ${fmt(totalAmount)}`;
+    }
+    
+    // 3. เรียกใช้การตรวจสอบข้อมูลเพื่อเปิด/ปิดปุ่ม
+    checkCheckoutFormValidity();
+}
+
+$paymentMethods.forEach(radio => radio.addEventListener('change', handlePaymentMethodChange));
+
+// Event listeners for input changes to enable/disable button
+[$shipName, $shipAddr, $shipPhone, $slipUpload, $cardNumber, $cardExpiry, $cardCVC].forEach(input => {
+    if (input) input.addEventListener('input', checkCheckoutFormValidity);
+});
+
+// Function to check if all required fields are filled
+function checkCheckoutFormValidity() {
+    const isShippingValid = $shipName.value.trim() !== '' && $shipAddr.value.trim() !== '' && $shipPhone.value.trim() !== '';
+    const selectedMethod = document.querySelector('input[name="payment"]:checked')?.value;
+    const isCartNotEmpty = Object.keys(cart).length > 0;
+    
+    if (!isCartNotEmpty) {
+        $confirmPayTransferBtn.disabled = true;
+        $confirmPayCardBtn.disabled = true;
+        return;
+    }
+    
+    if (selectedMethod === 'transfer') {
+        const isTransferValid = $slipUpload.files.length > 0;
+        $confirmPayTransferBtn.disabled = !(isShippingValid && isTransferValid);
+        // Ensure card button is disabled when not in use
+        $confirmPayCardBtn.disabled = true;
+    } else if (selectedMethod === 'card') {
+        // Mock validation for card fields
+        const isCardValid = $cardNumber.value.length === 16 && $cardExpiry.value.length === 5 && $cardCVC.value.length >= 3;
+        $confirmPayCardBtn.disabled = !(isShippingValid && isCardValid);
+        // Ensure transfer button is disabled when not in use
+        $confirmPayTransferBtn.disabled = true;
+    }
+}
+
+function loadShippingInfo() {
+    const memberPanelTitle = document.querySelector('.member-panel h3');
+    if (currentUser) {
+        $shipName.value = currentUser.name || '';
+        $shipAddr.value = currentUser.address || '';
+        $shipPhone.value = currentUser.phone || '';
+        memberPanelTitle.textContent = 'ข้อมูลผู้รับ / ที่อยู่ (ใช้ข้อมูลสมาชิก)';
+    } else {
+        try {
+            const tempShip = JSON.parse(localStorage.getItem('temp_shipping'));
+            if (tempShip) {
+                $shipName.value = tempShip.name || '';
+                $shipAddr.value = tempShip.address || '';
+                $shipPhone.value = tempShip.phone || '';
+            }
+        } catch(e) {}
+         memberPanelTitle.textContent = 'ข้อมูลผู้รับ / ที่อยู่';
+    }
+    // Call validity check after loading info
+    checkCheckoutFormValidity();
+}
+
+function saveShippingInfo() {
+    const tempShip = { name: $shipName.value, address: $shipAddr.value, phone: $shipPhone.value };
+    localStorage.setItem('temp_shipping', JSON.stringify(tempShip));
+    alert('บันทึกข้อมูลจัดส่งเรียบร้อย!');
+}
+
+function renderCheckoutSummary() {
+    let linesHTML = '';
+    let total = 0;
+    let itemCount = 0;
+    for (const id in cart) {
+        const qty = cart[id];
+        const p = PRODUCTS_AUGMENTED.find(prod => prod.id === id);
+        if (p && qty > 0) {
+            const subtotal = p.finalPrice * qty;
+            total += subtotal;
+            itemCount += qty;
+            linesHTML += `<div class="order-line"><div>${p.name} (x${p.qty}) x ${qty} ชุด</div><div>${fmt(subtotal)}</div></div>`;
+        }
+    }
+    $orderLines.innerHTML = linesHTML || '<div class="order-line" style="justify-content:center; color:var(--muted)">ไม่มีสินค้าในตะกร้า</div>';
+    $orderTotal.textContent = fmt(total);
+    $paymentAmountDisplay.textContent = fmt(total); 
+
+    // Update Card button text and total amount
+    $confirmPayCardBtn.textContent = `ชำระเงินด้วยบัตร ${fmt(total)}`;
+
+    $receiptPanel.style.display = 'none';
+    $orderSummaryPanel.style.display = 'block';
+    $memberPanel.style.display = 'block';
+    $paymentPanel.style.display = 'block';
+    $backToShop.style.display = 'block';
+    
+    // Call validity check on summary render
+    checkCheckoutFormValidity(); 
+    handlePaymentMethodChange(); 
+}
+
+function finalizeOrder(method, statusDetails) {
+    const receiptDetails = document.getElementById("receiptDetails");
+    let total = 0;
+    let receiptHTML = '<h4>รายการที่สั่งซื้อ</h4><ul style="list-style:none; padding:0; margin: 15px 0;">';
+    let paymentStatusText = method === 'card' ? `ชำระด้วยบัตร: <span style="color:var(--green); font-weight:700;">✅ ชำระเงินสำเร็จ</span>` : `ชำระด้วย: โอนเงินผ่านธนาคาร <span style="color:#d97706; font-weight:700;">⏳ รอยืนยันสลิป</span>`;
+
+    for (const id in cart) {
+        const qty = cart[id];
+        const p = PRODUCTS_AUGMENTED.find(prod => prod.id === id);
+        const subtotal = p.finalPrice * qty;
+        total += subtotal;
+        receiptHTML += `<li style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #ddd;"><span style="flex: 1; text-align: left;">${p.name} (x${p.qty}) x ${qty}</span><span style="font-weight: 700;">${fmt(subtotal)}</span></li>`;
+    }
+    receiptHTML += `</ul><div style="font-weight:900;margin-top:10px; font-size: 1.2rem; color: var(--red);">รวมทั้งสิ้น: ${fmt(total)}</div>`;
+    receiptHTML += `<div style="font-size:14px; margin-top:10px; text-align: left; padding-left: 10px; font-weight: 700;">วิธีชำระเงิน: ${paymentStatusText}</div>`; 
+    if (statusDetails) receiptHTML += `<div style="font-size:14px; margin-top:5px; text-align: left; padding-left: 10px; color: var(--muted);">รายละเอียด: ${statusDetails}</div>`;
+
+    receiptHTML += `<div style="font-size:14px; margin-top:20px; border-top:2px solid var(--crate-wood-dark); padding-top:10px; text-align: left;"><div style="font-weight: 700; margin-bottom: 5px;">ข้อมูลจัดส่ง:</div><div style="padding-left: 10px;"><div>ชื่อผู้รับ: <span style="font-weight: 600;">${$shipName.value}</span></div><div>ที่อยู่: <span style="font-weight: 600;">${$shipAddr.value}</span></div><div>โทรศัพท์: <span style="font-weight: 600;">${$shipPhone.value}</span></div></div></div>`;
+    receiptDetails.innerHTML = receiptHTML;
+
+    $orderSummaryPanel.style.display = 'none';
+    $memberPanel.style.display = 'none';
+    $paymentPanel.style.display = 'none'; 
+    $backToShop.style.display = 'none';
+    $receiptPanel.style.display = 'block';
+    clearCart(); 
+}
+
+// ---------------------- Event Listeners ใหม่ ----------------------
+
+$confirmPayTransferBtn.onclick = () => {
+    if (Object.keys(cart).length === 0) return alert("ตะกร้าสินค้าว่างเปล่า");
+    if (!$shipName.value || !$shipAddr.value || !$shipPhone.value) return alert("กรุณากรอกข้อมูลผู้รับให้ครบถ้วน");
+    
+    const fileInput = document.getElementById("slipUpload");
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) return alert("กรุณาอัปโหลดหลักฐานการโอนเงิน (สลิป)");
+    
+    // Simulate stock reduction for tools/materials/special items
+    // (Optional: You can add logic here to truly update mock stock if needed)
+    
+    finalizeOrder('transfer', `ไฟล์สลิป: ${fileInput.files[0].name}`);
+};
+
+$confirmPayCardBtn.onclick = () => {
+    if (Object.keys(cart).length === 0) return alert("ตะกร้าสินค้าว่างเปล่า");
+    if (!$shipName.value || !$shipAddr.value || !$shipPhone.value) return alert("กรุณากรอกข้อมูลผู้รับให้ครบถ้วน");
+    if ($cardNumber.value.length !== 16 || $cardExpiry.value.length !== 5 || $cardCVC.value.length < 3) return alert("กรุณากรอกข้อมูลบัตรเครดิตให้ถูกต้อง");
+
+    $confirmPayCardBtn.disabled = true;
+    const totalAmount = parseFloat($orderTotal.textContent.replace('฿', '').replace(/,/g, ''));
+    $confirmPayCardBtn.textContent = 'กำลังดำเนินการ...';
+    
+    // Simulate connection to payment gateway
+    setTimeout(() => {
+        $confirmPayCardBtn.disabled = false;
+        $confirmPayCardBtn.textContent = `ชำระเงินด้วยบัตร ${fmt(totalAmount)}`;
+        const mockRef = 'PYMT-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        alert(`✅ ธุรกรรมสำเร็จ! \n\nสถานะ: ชำระเงินเรียบร้อย\nหมายเลขอ้างอิง: ${mockRef}`);
+        finalizeOrder('card', `หมายเลขอ้างอิง: ${mockRef}`);
+    }, 2000);
+};
+
+// ---------------------- Initial Setup (Modified) ----------------------
+document.addEventListener('DOMContentLoaded', () => {
+    renderUserBadge();
+    $loginForm.addEventListener('submit', processLogin);
+    $registerForm.addEventListener('submit', processRegistration);
+    $registerModal.onclick = function(event) { if (event.target === $registerModal) $registerModal.classList.remove('show'); };
+    const initialHash = location.hash.substring(1) || 'home';
+    const targetPage = Array.from(allPages).map(p => p.id).includes(initialHash) ? initialHash : 'home';
+    activatePage(targetPage);
+    if (targetPage === 'checkout') {
+        handlePaymentMethodChange();
+        checkCheckoutFormValidity(); // Initial check on load
+    }
+});
+</script>
+</body>
+</html>
